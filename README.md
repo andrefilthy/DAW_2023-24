@@ -1,10 +1,8 @@
 # DAW project
 
-Please edit this document with an introduction to your project, including links to all the existing documentation.
+You can check the relevant project documents at:
 
-In addition, please add a [`.mailmap`](https://git-scm.com/docs/gitmailmap) file, mapping the emails used in the commits to your ISEL email and student number
-Example:
-
+## Dev Info
 ```
-12345 <a12345@alunos.isel.pt> <mygithubuser@whatever.com>
+Jorge Reis - 44771 A44771@alunos.isel.pt jorgeheaton4@gmail.com
 ```
