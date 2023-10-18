@@ -1,7 +1,8 @@
 package com.isel.daw.gomoku.domain
 
 data class User(
-    val id: Int,
-    val username: String,
-    val passwordValidation: PasswordValidationInfo
+    val username : String,
+    val pwd : PasswordValidationInfo,
+    val numberOfGames : Int,
+    val numberOfWins : Int
 )

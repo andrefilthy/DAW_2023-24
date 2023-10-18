@@ -1,10 +1,15 @@
 package com.isel.daw.gomoku
 
-import com.isel.daw.gomoku.domain.Sha256TokenEncoder
-import com.isel.daw.gomoku.domain.UsersDomainConfig
-import com.isel.daw.gomoku.repository.jdbi.configureWithAppRequirements
-import kotlinx.datetime.Clock
+import com.isel.daw.gomoku.http.controllers.PathTemplate
+import com.isel.daw.gomoku.http.pipelines.AuthenticationInterceptor
+import com.isel.daw.gomoku.http.pipelines.UserArgumentResolver
+import com.isel.daw.gomoku.repositories.jdbi.mappers.BoardMapper
+import com.isel.daw.gomoku.repositories.jdbi.mappers.InstantMapper
+import com.isel.daw.gomoku.repositories.jdbi.mappers.TokenValidationInfoMapper
+import com.isel.daw.gomoku.utils.Sha256TokenEncoder
+import isel.daw.proj.repositories.jdbi.mappers.PasswordValidationMapper
 import org.jdbi.v3.core.Jdbi
+import org.jdbi.v3.core.kotlin.KotlinPlugin
 import org.postgresql.ds.PGSimpleDataSource
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
@@ -14,48 +19,52 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.web.method.support.HandlerMethodArgumentResolver
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
-import kotlin.time.Duration.Companion.hours
 
 @SpringBootApplication
-class GomokuApplication
+class GomokuApplication {
 
+//docker build -t gomoku:1
+//docker run -d -p 8080:8080 --env JDBC_DATABASE_URL="jdbc:postgresql://host.docker.internal/postgres?user=postgres&password=postgres"  gomoku:1
 @Bean
-fun jdbi() = Jdbi.create(
-	PGSimpleDataSource().apply {
-		setURL(Environment.getDbUrl())
+fun jdbi() : Jdbi {
+	val jdbcDatabaseURL =
+		System.getenv("JDBC_DATABASE_URL")
+			?: "jdbc:postgresql://localhost:5432/postgres?user=postgres&password=postgres"
+	// ?; "jdbc:postgresql://localhost:8000/postgres?user=postgres&password=postgres"
+	val dataSource = PGSimpleDataSource()
+	dataSource.setURL(jdbcDatabaseURL)
+
+	return Jdbi.create(dataSource)
+		.installPlugin(KotlinPlugin())
+		.registerColumnMapper(BoardMapper())
+		//.registerColumnMapper(PlayerLogicMapper())
+		//.registerColumnMapper(RuleSetMapper())
+		.registerColumnMapper(InstantMapper())
+		.registerColumnMapper(PasswordValidationMapper())
+		.registerColumnMapper(TokenValidationInfoMapper())
 	}
-).configureWithAppRequirements()
 
 @Bean
 fun passwordEncoder() = BCryptPasswordEncoder()
-
 @Bean
 fun tokenEncoder() = Sha256TokenEncoder()
-
-@Bean
-fun clock() = Clock.System
-
-@Bean
-fun usersDomainConfig() = UsersDomainConfig(
-	tokenSizeInBytes = 256 / 8,
-	tokenTtl = 24.hours,
-	tokenRollingTtl = 1.hours,
-	maxTokensPerUser = 3
-)
 }
 
 @Configuration
 class PipelineConfigurer(
 	val authenticationInterceptor: AuthenticationInterceptor,
-	val authenticatedUserArgumentResolver: AuthenticatedUserArgumentResolver
+	val userArgumentResolver: UserArgumentResolver
 ) : WebMvcConfigurer {
 
 	override fun addInterceptors(registry: InterceptorRegistry) {
 		registry.addInterceptor(authenticationInterceptor)
+			.addPathPatterns(PathTemplate.gameController)
+			.addPathPatterns(PathTemplate.gameController+"/*")
+			.addPathPatterns(PathTemplate.gameController+"/*/*")
 	}
 
 	override fun addArgumentResolvers(resolvers: MutableList<HandlerMethodArgumentResolver>) {
-		resolvers.add(authenticatedUserArgumentResolver)
+		resolvers.add(userArgumentResolver)
 	}
 }
 

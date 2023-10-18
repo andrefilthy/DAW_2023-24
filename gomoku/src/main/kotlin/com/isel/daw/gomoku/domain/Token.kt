@@ -1,10 +1,12 @@
 package com.isel.daw.gomoku.domain
 
-import kotlinx.datetime.Instant
+import java.time.Instant
 
-class Token (
-    val tokenValidationInfo: TokenValidationInfo,
-    val userId: Int,
+data class Token(
+    val tokenValidation: TokenValidationInfo,
+    val userName: String,
     val createdAt: Instant,
-    val lastUsedAt: Instant
-    )
+    val lastUsedAt: Instant,
+    val expires_on : Instant
+)
+

@@ -1,4 +1,4 @@
-package com.isel.daw.gomoku.repository.jdbi.mappers
+package com.isel.daw.gomoku.repositories.jdbi.mappers
 
 import com.isel.daw.gomoku.domain.TokenValidationInfo
 import org.jdbi.v3.core.mapper.ColumnMapper
@@ -8,6 +8,7 @@ import java.sql.SQLException
 
 class TokenValidationInfoMapper : ColumnMapper<TokenValidationInfo> {
     @Throws(SQLException::class)
-    override fun map(r: ResultSet, columnNumber: Int, ctx: StatementContext?): TokenValidationInfo =
-        TokenValidationInfo(r.getString(columnNumber))
+    override fun map(r: ResultSet, columnNumber: Int, ctx: StatementContext?): TokenValidationInfo {
+        return TokenValidationInfo(r.getString(columnNumber))
+    }
 }
