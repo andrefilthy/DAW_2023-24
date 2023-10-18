@@ -19,9 +19,9 @@ enum class CellState(val char: Char) {
 
 data class Board(private val cells : Array<Array<CellState>>, val boardSize: Int){
     fun get(l : Int, c : Int) = cells[l][c]
-    fun mutate(state : CellState, playLine : Int, playCol : Int) : Board{
-        val newBoardCells = Array(boardSize) { l-> Array(boardSize) { c-> cells[l][c] } }
-        newBoardCells[playLine][playCol]=state
+    fun mutate(state: CellState, playLine: Int, playCol: Int): Board {
+        val newBoardCells = cells.map { it.clone() }.toTypedArray()
+        newBoardCells[playLine][playCol] = state
         return Board(newBoardCells, boardSize)
     }
 
@@ -43,36 +43,57 @@ data class Board(private val cells : Array<Array<CellState>>, val boardSize: Int
     //If cell is not empty, then we can't put any piece on it
     fun isPlayable(l : Int, c : Int) = cells[l][c] != CellState.BLACKPIECE && cells[l][c] != CellState.WHITEPIECE
 
-    fun hasWon(cell : CellState) : Boolean {
-        if(cell == CellState.WHITEPIECE){
-            TODO()
+    fun hasWon(board : Board, player : CellState) : Boolean {
+        val target = if (player == CellState.WHITEPIECE) "WWWWW" else "BBBBB"
+
+        // Check horizontal
+        for (row in cells) {
+            if (row.joinToString("").contains(target)) {
+                return true
+            }
         }
-        else if(cell == CellState.BLACKPIECE){
-            TODO()
+
+        // Check vertical
+        for (col in 0 until boardSize) {
+            val column = cells.map { it[col] }
+            if (column.joinToString("").contains(target)) {
+                return true
+            }
         }
+
+        // Check diagonals
+        for (i in 0 until boardSize) {
+            val diagonal1 = cells.slice(i until boardSize).mapIndexed { index, cell -> cell[index] }
+            val diagonal2 = cells.slice(0 until boardSize - i).mapIndexed { index, cell -> cell[index + i] }
+
+            if (diagonal1.joinToString("").contains(target) || diagonal2.joinToString("").contains(target)) {
+                return true
+            }
+        }
+
         return false
     }
 
     companion object {
         fun create(boardSize: Int) = Board(Array(boardSize) { Array(boardSize) { CellState.EMPTYCELL } }, boardSize = boardSize)
 
-        fun fromString(s: String) : Board {
+        fun fromString(s: String): Board {
             val boardSize = sqrt(s.length.toDouble()).toInt()
-            val b : Board = create(boardSize)
+            val b: Board = create(boardSize)
             var l = 0
             var c = 0
-            for(ch in s){
+            for (ch in s) {
                 b.cells[l][c] = CellState.fromChar(ch)
-                if(c == boardSize-1){
-                    c = -1
+                if (c == boardSize - 1) {
+                    c = 0
                     l++
+                } else {
+                    c++
                 }
-                c++
             }
             return b
         }
-
-    }
+}
 
 
     override fun toString() : String = cells.flatMap { row ->
