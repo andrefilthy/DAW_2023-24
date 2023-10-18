@@ -7,7 +7,7 @@ import com.isel.daw.gomoku.repositories.jdbi.mappers.BoardMapper
 import com.isel.daw.gomoku.repositories.jdbi.mappers.InstantMapper
 import com.isel.daw.gomoku.repositories.jdbi.mappers.TokenValidationInfoMapper
 import com.isel.daw.gomoku.utils.Sha256TokenEncoder
-import isel.daw.proj.repositories.jdbi.mappers.PasswordValidationMapper
+import com.isel.daw.gomoku.repositories.jdbi.mappers.PasswordValidationMapper
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.kotlin.KotlinPlugin
 import org.postgresql.ds.PGSimpleDataSource

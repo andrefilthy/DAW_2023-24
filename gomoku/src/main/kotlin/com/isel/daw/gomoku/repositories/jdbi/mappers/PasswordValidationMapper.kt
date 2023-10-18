@@ -1,4 +1,4 @@
-package isel.daw.proj.repositories.jdbi.mappers
+package com.isel.daw.gomoku.repositories.jdbi.mappers
 
 import com.isel.daw.gomoku.domain.PasswordValidationInfo
 import org.jdbi.v3.core.mapper.ColumnMapper

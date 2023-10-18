@@ -43,6 +43,16 @@ data class Board(private val cells : Array<Array<CellState>>, val boardSize: Int
     //If cell is not empty, then we can't put any piece on it
     fun isPlayable(l : Int, c : Int) = cells[l][c] != CellState.BLACKPIECE && cells[l][c] != CellState.WHITEPIECE
 
+    fun hasWon(cell : CellState) : Boolean {
+        if(cell == CellState.WHITEPIECE){
+            TODO()
+        }
+        else if(cell == CellState.BLACKPIECE){
+            TODO()
+        }
+        return false
+    }
+
     companion object {
         fun create(boardSize: Int) = Board(Array(boardSize) { Array(boardSize) { CellState.EMPTYCELL } }, boardSize = boardSize)
 
