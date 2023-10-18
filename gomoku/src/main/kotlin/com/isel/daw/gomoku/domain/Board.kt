@@ -43,7 +43,7 @@ data class Board(private val cells : Array<Array<CellState>>, val boardSize: Int
     //If cell is not empty, then we can't put any piece on it
     fun isPlayable(l : Int, c : Int) = cells[l][c] != CellState.BLACKPIECE && cells[l][c] != CellState.WHITEPIECE
 
-    fun hasWon(board : Board, player : CellState) : Boolean {
+    fun hasWon(player : CellState) : Boolean {
         val target = if (player == CellState.WHITEPIECE) "WWWWW" else "BBBBB"
 
         // Check horizontal
