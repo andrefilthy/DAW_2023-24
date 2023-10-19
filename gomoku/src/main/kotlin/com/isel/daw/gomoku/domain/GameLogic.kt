@@ -17,7 +17,7 @@ class GameLogic(
             gameID = UUID.randomUUID(),
             ruleSet = rules,
             created = now,
-            currentPhase = Game.Phase.PLANNING,
+            currentPhase = Game.Phase.PLACING,
             currentState = Game.State.NEXT_PLAYER1,
             player1 = player1,
             player2 = player2,
@@ -26,7 +26,7 @@ class GameLogic(
             player2Logic = PlayerLogic.create(2),
             turnStartedAt = null
         )
-        return RoundResultWithGame.StartPlanningPhase(game)
+        return RoundResultWithGame.StartPlacingPhase(game)
     }
 
     fun doPlace(game: Game, round : Round) : RoundResult{
@@ -97,9 +97,6 @@ class GameLogic(
         if(player.username != game.player1.username && player.username != game.player2.username){
             return EmptyRoundResult.NotAPlayer
         }
-        if(game.ruleSet.layoutTime + game.created.epochSecond <= clock.now().epochSecond ){
-            return RoundResultWithGame.TimeOut(game.copy(currentPhase = Game.Phase.COMPLETED))
-        }
 
         if(game.isPlayer1(player)){
             game.player1Logic.isReady = true
@@ -135,7 +132,6 @@ sealed class RoundResultWithGame(open val game : Game): RoundResult{
     data class GameEnded(override val game: Game) : RoundResultWithGame(game)
     data class OthersTurn(override val game: Game) : RoundResultWithGame(game)
     data class PlaceAgain(override val game : Game) : RoundResultWithGame(game)
-    data class StartPlanningPhase(override val game : Game) : RoundResultWithGame(game)
     data class StartPlacingPhase(override val game : Game) : RoundResultWithGame(game)
     data class OtherPlayerNotReady(override val game: Game) : RoundResultWithGame(game)
 }

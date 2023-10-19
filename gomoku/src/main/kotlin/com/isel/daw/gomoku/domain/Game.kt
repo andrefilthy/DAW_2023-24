@@ -19,7 +19,6 @@ data class Game(
 
     enum class Phase(val phase : String) {
         PLACING("Placing"),
-        PLANNING("Planning"),
         COMPLETED("Completed")
     }
 

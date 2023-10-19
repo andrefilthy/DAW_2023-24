@@ -4,12 +4,11 @@ data class RuleSet( //TODO("variant and opening rules classes")
     val boardSize : Int,
     //val variant : Variant,
     //val openingRules : OpeningRules,
-    val layoutTime : Int,
     val placingTime: Int
 ){
     override fun toString(): String {
-        //return "$boardSize/$variant/$openingRules/$layoutTime/$placingTime" THIS IS THE RIGHT ONE
-        return "$boardSize/$layoutTime/$placingTime"
+        //return "$boardSize/$variant/$openingRules/$placingTime" THIS IS THE RIGHT ONE
+        return "$boardSize/$placingTime"
     }
 
     companion object {
@@ -19,8 +18,7 @@ data class RuleSet( //TODO("variant and opening rules classes")
                 boardSize = valuesArray[0].toInt(),
                 //variant = Variant.fromString(valuesArray[1]),
                 //openingRules = OpeningRules.valuesArray[2].toInt(),
-                layoutTime = valuesArray[3].toInt(),
-                placingTime = valuesArray[4].toInt()
+                placingTime = valuesArray[3].toInt()
             )
         }
     }

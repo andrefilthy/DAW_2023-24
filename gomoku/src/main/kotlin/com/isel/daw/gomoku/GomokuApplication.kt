@@ -22,7 +22,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 
 @SpringBootApplication
 class GomokuApplication {
-
+	//TODO("RuleSetMapper, PlayerLogicMapper, Rules(Variants and OpeningRules")
 //docker build -t gomoku:1
 //docker run -d -p 8080:8080 --env JDBC_DATABASE_URL="jdbc:postgresql://host.docker.internal/postgres?user=postgres&password=postgres"  gomoku:1
 @Bean

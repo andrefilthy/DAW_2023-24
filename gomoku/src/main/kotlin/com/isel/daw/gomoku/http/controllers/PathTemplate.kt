@@ -11,7 +11,7 @@ object PathTemplate {
     const val start = ""
     const val getGame = "/{gameID}"
     const val place = "/{gameID}/play"
-    const val setPosition = "/{gameID}/set"
+    //const val setPosition = "/{gameID}/set"
 
     /** INDEX CONTROLLER /index **/
 
