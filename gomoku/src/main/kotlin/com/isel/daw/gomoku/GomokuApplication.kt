@@ -8,6 +8,8 @@ import com.isel.daw.gomoku.repositories.jdbi.mappers.InstantMapper
 import com.isel.daw.gomoku.repositories.jdbi.mappers.TokenValidationInfoMapper
 import com.isel.daw.gomoku.utils.Sha256TokenEncoder
 import com.isel.daw.gomoku.repositories.jdbi.mappers.PasswordValidationMapper
+import isel.daw.proj.repositories.jdbi.mappers.PlayerLogicMapper
+import isel.daw.proj.repositories.jdbi.mappers.RuleSetMapper
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.kotlin.KotlinPlugin
 import org.postgresql.ds.PGSimpleDataSource
@@ -22,7 +24,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 
 @SpringBootApplication
 class GomokuApplication {
-	//TODO("RuleSetMapper, PlayerLogicMapper, Rules(Variants and OpeningRules")
+	//TODO("Rules(Variants and OpeningRules")
 //docker build -t gomoku:1
 //docker run -d -p 8080:8080 --env JDBC_DATABASE_URL="jdbc:postgresql://host.docker.internal/postgres?user=postgres&password=postgres"  gomoku:1
 @Bean
@@ -37,8 +39,8 @@ fun jdbi() : Jdbi {
 	return Jdbi.create(dataSource)
 		.installPlugin(KotlinPlugin())
 		.registerColumnMapper(BoardMapper())
-		//.registerColumnMapper(PlayerLogicMapper())
-		//.registerColumnMapper(RuleSetMapper())
+		.registerColumnMapper(PlayerLogicMapper())
+		.registerColumnMapper(RuleSetMapper())
 		.registerColumnMapper(InstantMapper())
 		.registerColumnMapper(PasswordValidationMapper())
 		.registerColumnMapper(TokenValidationInfoMapper())
