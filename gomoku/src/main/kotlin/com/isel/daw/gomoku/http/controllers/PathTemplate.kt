@@ -8,10 +8,9 @@ object PathTemplate {
     const val statsController = "/stats"
 
     /** GAME CONTROLLER, /game **/
-    const val start = ""
+    const val start = ""                //começar o jogo
     const val getGame = "/{gameID}"
-    const val place = "/{gameID}/play"
-    //const val setPosition = "/{gameID}/set"
+    const val place = "/{gameID}/set"
 
     /** INDEX CONTROLLER /index **/
 

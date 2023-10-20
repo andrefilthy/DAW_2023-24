@@ -21,7 +21,7 @@ data class RuleSetInputModel(
     val boardSize : Int,
     //val variant : Variant,
     //val openingRules : OpeningRules,
-    val shootingTime : Int
+    val placingTime : Int
 )
 
 data class GamePositionInputModel(
@@ -30,6 +30,10 @@ data class GamePositionInputModel(
 
 data class BoardInputModel(
     val cells: String
+)
+
+data class PieceOutputModel(
+    val color : String
 )
 
 data class BoardOutputModel(

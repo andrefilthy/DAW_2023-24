@@ -15,6 +15,11 @@ class GameServices(
 ) {
     var waitingList : MutableMap<User, RuleSet> = mutableMapOf()
 
+    fun getByUser(user: User) : GameServiceResult{
+        val game = transactionManager.run { it.gamesRepository.getByUser(user) }?: return gameNotFound()
+        return Either.Success(GameServicesSuccess.GameRetrieved(game))
+    }
+
     fun getById(gameID : UUID) : GameServiceResult {
         val game = transactionManager.run { it.gamesRepository.getById(gameID) }?: return gameNotFound()
         return Either.Success(GameServicesSuccess.GameRetrieved(game))
@@ -30,7 +35,7 @@ class GameServices(
             boardSize = ruleSet.boardSize,
             //variant = ruleSet.variant,
             //openingRules = ruleSet.openingRules,
-            placingTime = ruleSet.shootingTime
+            placingTime = ruleSet.placingTime
         )
         var result : RoundResult
         for(entry in waitingList){

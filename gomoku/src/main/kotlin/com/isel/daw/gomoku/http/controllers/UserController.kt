@@ -1,6 +1,6 @@
 package com.isel.daw.gomoku.http.controllers
 
-import com.isel.daw.gomoku.dtos.ErrorOutputModel
+import com.isel.daw.gomoku.dtos.ProblemOutputModel
 import com.isel.daw.gomoku.dtos.TokenOutputModel
 import com.isel.daw.gomoku.dtos.UserInputModel
 import com.isel.daw.gomoku.services.UserCreationError
@@ -36,9 +36,9 @@ class UserController(val userServices: UserServices) {
                     )
             }
             is Either.Error -> when(res.value){
-                is UserCreationError.UserAlreadyExists-> ResponseEntity.status(409).body(ErrorOutputModel("UserAlreadyExists", "Username already exists"))
-                is UserCreationError.WeakPasswordError-> ResponseEntity.status(400).body(ErrorOutputModel("WeakPasswordError", "Your password is too weak"))
-                is UserCreationError.TokenCreationWentWrong-> ResponseEntity.status(500).body(ErrorOutputModel("TokenCreationWentWrong", "Oops...Token Creation went wrong"))
+                is UserCreationError.UserAlreadyExists-> ResponseEntity.status(409).body(ProblemOutputModel("UserAlreadyExists", "Username already exists", null))
+                is UserCreationError.WeakPasswordError-> ResponseEntity.status(400).body(ProblemOutputModel("WeakPasswordError", "Your password is too weak", null))
+                is UserCreationError.TokenCreationWentWrong-> ResponseEntity.status(500).body(ProblemOutputModel("TokenCreationWentWrong", "Oops...Token Creation went wrong", null))
             }
         }
 
@@ -66,8 +66,8 @@ class UserController(val userServices: UserServices) {
             }
             is Either.Error -> {
                 when (res.value){
-                    is UserLoginError.UserNotFound -> ResponseEntity.status(404).body(ErrorOutputModel("UserNotFound", "User with given Username was not found"))
-                    is UserLoginError.WrongPassword -> ResponseEntity.status(401).body(ErrorOutputModel("WrongPassword", "User password does not match"))
+                    is UserLoginError.UserNotFound -> ResponseEntity.status(404).body(ProblemOutputModel("UserNotFound", "User with given Username was not found", null))
+                    is UserLoginError.WrongPassword -> ResponseEntity.status(401).body(ProblemOutputModel("WrongPassword", "User password does not match", null))
                 }
             }
         }

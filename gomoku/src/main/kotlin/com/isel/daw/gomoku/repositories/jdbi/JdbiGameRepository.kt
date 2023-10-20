@@ -8,6 +8,10 @@ import java.time.Instant
 import java.util.*
 
 class JdbiGameRepository(private val handle : Handle) : GamesRepository {
+    override fun getByUser(user: User): Game? {
+        TODO("Not yet implemented")
+    }
+
     override fun getById(id: UUID): Game? =
         handle.createQuery(
             "SELECT games.gameID, games.ruleSet, games.created, games.currentPhase, games.currentState, games.board1, games.board2, games.player1_logic, games.player2_logic, games.turnStartedAt, " +
@@ -37,7 +41,7 @@ class JdbiGameRepository(private val handle : Handle) : GamesRepository {
 
     override fun insert(game: Game) {
         handle.createUpdate(
-            "insert into dbo.game(gameID, ruleSet, created, currentPhase, currentState, player1, player2, board1, board2, player1_logic, player2_logic, turnStartedAt) values (:id, :ruleSet, :created, :phase, :state, :player1 , :player2, :board1, :board2, :p1Logic, :p2Logic, :turnStartedAt)")
+            "insert into dbo.game(gameID, ruleSet, created, currentPhase, currentState, player1, player2, board, player1_logic, player2_logic, turnStartedAt) values (:id, :ruleSet, :created, :phase, :state, :player1 , :player2, :board, :p1Logic, :p2Logic, :turnStartedAt)")
             .bind("id",game.gameID)
             .bind("ruleSet", game.ruleSet.toString())
             .bind("created", game.created.epochSecond)
