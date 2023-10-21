@@ -20,7 +20,7 @@ enum class CellState(val char: Char) {
 data class Board(private val cells : Array<Array<CellState>>, val boardSize: Int){
     fun get(l : Int, c : Int) = cells[l][c]
     fun mutate(state: CellState, playLine: Int, playCol: Int): Board {
-        val newBoardCells = cells.map { it.clone() }.toTypedArray()
+        val newBoardCells = Array(boardSize) { l-> Array(boardSize) { c-> cells[l][c] } }
         newBoardCells[playLine][playCol] = state
         return Board(newBoardCells, boardSize)
     }
