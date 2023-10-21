@@ -14,6 +14,12 @@ enum class CellState(val char: Char) {
             'B' -> BLACKPIECE
             else -> throw IllegalArgumentException("Invalid value for Board.State")
         }
+
+        fun toChar(cellState: CellState) = when (cellState) {
+            EMPTYCELL -> '-'
+            WHITEPIECE -> 'W'
+            BLACKPIECE -> 'B'
+        }
     }
 }
 
@@ -44,11 +50,11 @@ data class Board(private val cells : Array<Array<CellState>>, val boardSize: Int
     fun isPlayable(l : Int, c : Int) = cells[l][c] != CellState.BLACKPIECE && cells[l][c] != CellState.WHITEPIECE
 
     fun hasWon(player : CellState) : Boolean {
-        val target = if (player == CellState.WHITEPIECE) "WWWWW" else "BBBBB"
+        val target = if (player.char == CellState.WHITEPIECE.char) "WWWWW" else "BBBBB"
 
         // Check horizontal
         for (row in cells) {
-            if (row.joinToString("").contains(target)) {
+            if (row.map { it.char }.joinToString("").contains(target)) {
                 return true
             }
         }
@@ -70,7 +76,6 @@ data class Board(private val cells : Array<Array<CellState>>, val boardSize: Int
                 return true
             }
         }
-
         return false
     }
 
