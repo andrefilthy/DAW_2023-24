@@ -61,7 +61,7 @@ data class Board(private val cells : Array<Array<CellState>>, val boardSize: Int
 
         // Check vertical
         for (col in 0 until boardSize) {
-            val column = cells.map { it[col] }
+            val column = cells.map { it[col].char }
             if (column.joinToString("").contains(target)) {
                 return true
             }
@@ -69,8 +69,8 @@ data class Board(private val cells : Array<Array<CellState>>, val boardSize: Int
 
         // Check diagonals
         for (i in 0 until boardSize) {
-            val diagonal1 = cells.slice(i until boardSize).mapIndexed { index, cell -> cell[index] }
-            val diagonal2 = cells.slice(0 until boardSize - i).mapIndexed { index, cell -> cell[index + i] }
+            val diagonal1 = cells.slice(i until boardSize).mapIndexed { index, cell -> cell[index].char }
+            val diagonal2 = cells.slice(0 until boardSize - i).mapIndexed { index, cell -> cell[index + i].char }
 
             if (diagonal1.joinToString("").contains(target) || diagonal2.joinToString("").contains(target)) {
                 return true

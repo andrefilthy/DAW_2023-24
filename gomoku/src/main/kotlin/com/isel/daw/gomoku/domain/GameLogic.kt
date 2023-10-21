@@ -70,10 +70,11 @@ class GameLogic(
                         else
                             board.mutate(CellState.WHITEPIECE, round.play.l, round.play.c) //player 2 has whitepieces
                     }
-                    else -> { //A cell já tem uma peça
+                    else -> { //A cell já tem uma peça: condição repetida
                         return EmptyRoundResult.PositionNotAvailable
                     }
                 }
+                state = playerLogic.changeTurn(game, round.player) //changeTurn
             }
             if(game.isPlayer1(round.player)){
                 if(board.hasWon(CellState.BLACKPIECE)) {
