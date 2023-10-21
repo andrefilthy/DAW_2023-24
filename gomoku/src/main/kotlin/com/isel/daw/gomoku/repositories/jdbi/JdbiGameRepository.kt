@@ -14,7 +14,7 @@ class JdbiGameRepository(private val handle : Handle) : GamesRepository {
 
     override fun getById(id: UUID): Game? =
         handle.createQuery(
-            "SELECT games.gameID, games.ruleSet, games.created, games.currentPhase, games.currentState, games.board1, games.board2, games.player1_logic, games.player2_logic, games.turnStartedAt, " +
+            "SELECT games.gameID, games.ruleSet, games.created, games.currentPhase, games.currentState, games.board, games.player1_logic, games.player2_logic, games.turnStartedAt, " +
                     "player1.username as player1_username, player1.pwd as player1_pwd, player1.numberOfGames as player1_numberOfGames, player1.numberOfWins as player1_numberOfWins, " +
                     "player2.username as player2_username, player2.pwd as player2_pwd, player2.numberOfGames as player2_numberOfGames, player2.numberOfWins as player2_numberOfWins" +
                     " FROM dbo.game games " +

@@ -11,7 +11,7 @@ open class GameServicesResult{
         fun roundToServicesResult(result : RoundResult) : GameServicesResult {
             return when (result){
                 is RoundResultWithGame.TimeOut -> GameServicesSuccess.GameServicesSuccessWithGame.PlanningTimeout(result.game, "PlanningTimeout", 200)
-                is RoundResultWithGame.TooLate -> GameServicesSuccess.GameServicesSuccessWithGame.PlacingTimeout(result.game, "ShootingTimeout", 200)
+                is RoundResultWithGame.TooLate -> GameServicesSuccess.GameServicesSuccessWithGame.PlacingTimeout(result.game, "PlacingTimeout", 200)
                 is RoundResultWithGame.GameEnded -> GameServicesSuccess.GameServicesSuccessWithGame.PlaySuccessful(result.game, "GameCompleted", 200)
                 is RoundResultWithGame.OtherPlayerNotReady -> GameServicesSuccess.GameServicesSuccessWithGame.PositionDefined(result.game, "WaitingForOtherPlayer", 200)
                 is RoundResultWithGame.StartPlacingPhase -> GameServicesSuccess.GameServicesSuccessWithGame.PositionDefined(result.game, "PlacingStarted", 200)

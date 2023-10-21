@@ -52,10 +52,10 @@ class GameLogic(
         if (!playerLogic.isTurn(game, round.player)) {
             return EmptyRoundResult.NotYourTurn
         } else {
-            if(now.epochSecond >= game.turnStartedAt!!.epochSecond + game.ruleSet.placingTime){
-                val state = playerLogic.changeTurn(game, round.player)
-                return RoundResultWithGame.TooLate(game.copy(currentState = state, turnStartedAt = now))
-            }
+//            if(now.epochSecond >= game.turnStartedAt!!.epochSecond + game.ruleSet.placingTime){
+//                val state = playerLogic.changeTurn(game, round.player)
+//                return RoundResultWithGame.TooLate(game.copy(currentState = state, turnStartedAt = now))
+//            }
             var board = game.board
             var phase = game.currentPhase
             var state = game.currentState
@@ -66,9 +66,9 @@ class GameLogic(
                 board = when (board.get(round.play.l, round.play.c)) {
                     CellState.EMPTYCELL ->{
                         if(game.isPlayer1(round.player))
-                            board.mutate(CellState.BLACKPIECE, round.play.l, round.play.c)
+                            board.mutate(CellState.BLACKPIECE, round.play.l, round.play.c) //player 1 has blackpieces
                         else
-                            board.mutate(CellState.WHITEPIECE, round.play.l, round.play.c)
+                            board.mutate(CellState.WHITEPIECE, round.play.l, round.play.c) //player 2 has whitepieces
                     }
                     else -> { //A cell já tem uma peça
                         return EmptyRoundResult.PositionNotAvailable
@@ -81,14 +81,14 @@ class GameLogic(
                     phase = Game.Phase.COMPLETED
                     return RoundResultWithGame.GameEnded(game.copy(board = board, currentState = state, currentPhase = phase, player1Logic = playerLogic))
                 }
-                return RoundResultWithGame.PlaceAgain(game.copy(board = board, currentState = state, currentPhase = phase, player1Logic = playerLogic))
+                return RoundResultWithGame.StartPlacingPhase(game.copy(board = board, currentState = state, currentPhase = phase, player1Logic = playerLogic))
             }else{
                 if(board.hasWon(CellState.WHITEPIECE)) {
                     state = Game.State.PLAYER2_WON
                     phase = Game.Phase.COMPLETED
                     return RoundResultWithGame.GameEnded(game.copy(board = board, currentState = state, currentPhase = phase, player2Logic = playerLogic))
                 }
-                return RoundResultWithGame.PlaceAgain(game.copy(board = board, currentState = state, currentPhase = phase, player2Logic = playerLogic))
+                return RoundResultWithGame.StartPlacingPhase(game.copy(board = board, currentState = state, currentPhase = phase, player2Logic = playerLogic))
             }
         }
     }
@@ -131,7 +131,6 @@ sealed class RoundResultWithGame(open val game : Game): RoundResult{
     data class TimeOut(override val game : Game) : RoundResultWithGame(game)
     data class GameEnded(override val game: Game) : RoundResultWithGame(game)
     data class OthersTurn(override val game: Game) : RoundResultWithGame(game)
-    data class PlaceAgain(override val game : Game) : RoundResultWithGame(game)
     data class StartPlacingPhase(override val game : Game) : RoundResultWithGame(game)
     data class OtherPlayerNotReady(override val game: Game) : RoundResultWithGame(game)
 }

@@ -41,7 +41,7 @@ data class PlayerLogic(
         fun fromString(s : String) : PlayerLogic{
             val valuesArray = s.split(";")
             val isReadyString = valuesArray[0]
-            val playerString = valuesArray[2]
+            val playerString = valuesArray[1]
 
             val readyBool : Boolean = isReadyString == "1"
             val playerNumber = Type.fromInt(playerString.toInt())

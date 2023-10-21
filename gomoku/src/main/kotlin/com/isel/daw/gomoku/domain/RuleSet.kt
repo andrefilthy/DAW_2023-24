@@ -18,7 +18,7 @@ data class RuleSet( //TODO("variant and opening rules classes")
                 boardSize = valuesArray[0].toInt(),
                 //variant = Variant.fromString(valuesArray[1]),
                 //openingRules = OpeningRules.valuesArray[2].toInt(),
-                placingTime = valuesArray[3].toInt()
+                placingTime = valuesArray[1].toInt() //placingTime = valuesArray[3].toInt()
             )
         }
     }
