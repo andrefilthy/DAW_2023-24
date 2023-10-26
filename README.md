@@ -1,6 +1,7 @@
 # DAW project
 
 You can check the relevant project documents at:
+[API Documentation](./docs/APIdoc.md)
 
 ## Dev Info
 ```

@@ -438,7 +438,7 @@ This error will occur when trying to perform any action on an already completed 
         "message": "It is not your turn to play"
     }
     ```
-This error will occur when a player tries to perform a shot when it is not their turn. Make sure the opponent's turn has ended before trying to shoot.
+This error will occur when a player tries to place a piece when it is not their turn. Make sure the opponent's turn has ended before trying to place a piece.
 #### AlreadySearching
 * status code: 403
 * body:
