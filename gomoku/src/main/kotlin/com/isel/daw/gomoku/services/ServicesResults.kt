@@ -13,12 +13,11 @@ open class GameServicesResult{
                 is RoundResultWithGame.TooLate -> GameServicesSuccess.GameServicesSuccessWithGame.PlacingTimeout(result.game, "PlacingTimeout", 200)
                 is RoundResultWithGame.GameEnded -> GameServicesSuccess.GameServicesSuccessWithGame.PlaySuccessful(result.game, "GameCompleted", 200)
                 is RoundResultWithGame.OtherPlayerNotReady -> GameServicesSuccess.GameServicesSuccessWithGame.PositionDefined(result.game, "WaitingForOtherPlayer", 200)
-                is RoundResultWithGame.StartPlacingPhase -> GameServicesSuccess.GameServicesSuccessWithGame.PositionDefined(result.game, "PlacingStarted", 200)
+                is RoundResultWithGame.StartPlacingPhase -> GameServicesSuccess.GameServicesSuccessWithGame.PositionDefined(result.game, "PlacingDone", 200)
                 is RoundResultWithGame.OthersTurn -> GameServicesSuccess.GameServicesSuccessWithGame.PlaySuccessful(result.game, "TurnChanged", 200)
                 is EmptyRoundResult.NotAPlayer -> GameServicesError.NotAPlayer()
                 is EmptyRoundResult.PositionNotAvailable -> GameServicesError.NotAValidPlay()
                 is EmptyRoundResult.GameAlreadyEnded -> GameServicesError.GameHasEnded()
-                is EmptyRoundResult.NotAllPlayersAreReady -> GameServicesError.PlayersNotReady()
                 is EmptyRoundResult.NotYourTurn -> GameServicesError.NotYourTurn()
                 is EmptyRoundResult.WaitingForOtherPlayer -> GameServicesSuccess.WaitingForPlayer()
                 else -> GameServicesResult()
@@ -44,8 +43,6 @@ sealed class GameServicesError(
         "InvalidPlay", "The specified position is not a valid playing position", 403)
     class GameHasEnded() : GameServicesError(
         "GameEnded", "The game has finished and the operation is not valid for a finished game", 403)
-    class PlayersNotReady() : GameServicesError(
-        "PlayersNotReady", "Not all players have placed their ships yet, unable to shoot", 403)
     class NotYourTurn() : GameServicesError(
         "NotYourTurn", "It is not your turn to play", 403)
     class AlreadySearching() : GameServicesError(

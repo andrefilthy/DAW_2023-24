@@ -93,20 +93,6 @@ class GameLogic(
             }
         }
     }
-
-    private fun applyPiecesPosition(game: Game, player: User, board: Board) : RoundResult{
-        return if(game.player1Logic.isReady && game.player2Logic.isReady){
-            when(game.isPlayer1(player)){
-                true -> RoundResultWithGame.StartPlacingPhase(game.copy(board = board, currentPhase = Game.Phase.PLACING, currentState = Game.State.NEXT_PLAYER1, turnStartedAt = Instant.now()))
-                false -> RoundResultWithGame.StartPlacingPhase(game.copy(board = board, currentPhase = Game.Phase.PLACING, currentState = Game.State.NEXT_PLAYER2, turnStartedAt = Instant.now()))
-            }
-        } else{
-            when(game.isPlayer1(player)){
-                true -> RoundResultWithGame.OtherPlayerNotReady(game.copy(board = board, currentState = Game.State.PLAYER1_WAITING))
-                false -> RoundResultWithGame.OtherPlayerNotReady(game.copy(board = board, currentState = Game.State.PLAYER2_WAITING))
-            }
-        }
-    }
 }
 
 interface RoundResult{
