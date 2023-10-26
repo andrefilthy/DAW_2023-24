@@ -10,7 +10,6 @@ open class GameServicesResult{
     companion object{
         fun roundToServicesResult(result : RoundResult) : GameServicesResult {
             return when (result){
-                is RoundResultWithGame.TimeOut -> GameServicesSuccess.GameServicesSuccessWithGame.PlanningTimeout(result.game, "PlanningTimeout", 200)
                 is RoundResultWithGame.TooLate -> GameServicesSuccess.GameServicesSuccessWithGame.PlacingTimeout(result.game, "PlacingTimeout", 200)
                 is RoundResultWithGame.GameEnded -> GameServicesSuccess.GameServicesSuccessWithGame.PlaySuccessful(result.game, "GameCompleted", 200)
                 is RoundResultWithGame.OtherPlayerNotReady -> GameServicesSuccess.GameServicesSuccessWithGame.PositionDefined(result.game, "WaitingForOtherPlayer", 200)
@@ -79,7 +78,6 @@ sealed class GameServicesSuccess(
         data class GameStarted(override val game: Game, override val resInfo : String, override val statusCode: Int) : GameServicesSuccessWithGame(game, resInfo, statusCode)
         data class PositionDefined(override val game: Game, override val resInfo : String, override val statusCode: Int) : GameServicesSuccessWithGame(game, resInfo, statusCode)
         data class PlaySuccessful(override val game : Game, override val resInfo : String, override val statusCode: Int) : GameServicesSuccessWithGame(game, resInfo, statusCode)
-        data class PlanningTimeout(override val game : Game, override val resInfo : String, override val statusCode: Int) : GameServicesSuccessWithGame(game, resInfo, statusCode)
         data class PlacingTimeout(override val game : Game, override val resInfo : String, override val statusCode: Int) : GameServicesSuccessWithGame(game, resInfo, statusCode)
 
     }

@@ -94,20 +94,6 @@ class GameLogic(
         }
     }
 
-    fun placePiece(game : Game, player : User, board : Board) : RoundResult{
-        if(player.username != game.player1.username && player.username != game.player2.username){
-            return EmptyRoundResult.NotAPlayer
-        }
-
-        if(game.isPlayer1(player)){
-            game.player1Logic.isReady = true
-        }
-        if(game.isPlayer2(player)){
-            game.player2Logic.isReady = true
-        }
-        return applyPiecesPosition(game, player, board)
-    }
-
     private fun applyPiecesPosition(game: Game, player: User, board: Board) : RoundResult{
         return if(game.player1Logic.isReady && game.player2Logic.isReady){
             when(game.isPlayer1(player)){

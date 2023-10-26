@@ -35,7 +35,7 @@ class InfoController {
         )
         private val author3 = AuthInfo(
             "André Ramalho",
-            "44@isel.alunos.pt",
+            "44799@isel.alunos.pt",
             44
 
         )
