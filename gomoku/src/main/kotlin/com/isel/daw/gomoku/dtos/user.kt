@@ -11,9 +11,6 @@ data class UserInputModel(
     val password: String
 )
 
-
-
-
 data class UserOutputModel(
     val username: String,
     val numberOfGames : Int,

@@ -1,7 +1,9 @@
 package com.isel.daw.gomoku.dtos
 
 import com.isel.daw.gomoku.domain.Game
+import com.isel.daw.gomoku.domain.OpeningRules
 import com.isel.daw.gomoku.domain.Play
+import com.isel.daw.gomoku.domain.Variant
 import com.isel.daw.gomoku.hypermedia.LinkRelation
 import com.isel.daw.gomoku.hypermedia.SirenModel
 import com.isel.daw.gomoku.hypermedia.siren
@@ -19,8 +21,8 @@ data class GameStartInputModel(
 
 data class RuleSetInputModel(
     val boardSize : Int,
-    //val variant : Variant,
-    //val openingRules : OpeningRules,
+    val variant : Variant,
+    val openingRules : OpeningRules,
     val placingTime : Int
 )
 
