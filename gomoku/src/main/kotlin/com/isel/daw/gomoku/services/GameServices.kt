@@ -63,6 +63,16 @@ class GameServices(
             transactionManager.run {
                 it.gamesRepository.update(result.game)
             }
+            if(result.game.currentPhase == Game.Phase.COMPLETED){
+                val winner = if(result.game.currentState == Game.State.PLAYER1_WON) result.game.player1
+                else result.game.player2
+                val loser = if(result.game.currentState == Game.State.PLAYER2_WON) result.game.player1
+                else result.game.player2
+                transactionManager.run {
+                    it.userRepository.update(User(winner.username,winner.pwd, winner.numberOfGames+1, winner.numberOfWins+1))
+                    it.userRepository.update(User(loser.username,loser.pwd, loser.numberOfGames+1, loser.numberOfWins))
+                }
+            }
             return Either.Success(GameServicesResult.roundToServicesResult(result) as GameServicesSuccess)
         }
         return Either.Error(GameServicesResult.roundToServicesResult(result) as GameServicesError)
