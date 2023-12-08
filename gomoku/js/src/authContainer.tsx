@@ -9,4 +9,3 @@ type AuthnContextType = {
     loggedIn: boolean,
     setLoggedIn: (v: boolean) => void
 }
-

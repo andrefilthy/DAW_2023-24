@@ -33,4 +33,9 @@ create table dbo.Token(
     expires_on int
 );
 
+create table dbo.waitingList(
+  player varchar(64) references dbo.User(username),
+  ruleSet varchar(200)
+);
+
 
