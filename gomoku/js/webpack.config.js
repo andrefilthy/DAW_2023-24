@@ -12,11 +12,14 @@ module.exports = {
     compress: false,
     proxy: {
       '/api': {
-        target: 'http://localhost:8080',
+        target: {
+          host: '0.0.0.0',
+          protocol: 'http:',
+          port: '8080'
+        },
         // introducing an API delay to make testing easier
-        pathRewrite: async function (path, req) {
-          await delay(1000);
-          return path;
+        pathRewrite: {
+          '^/api': ''
         },
         onProxyRes: (proxyRes, req, res) => {
           proxyRes.on('close', () => {

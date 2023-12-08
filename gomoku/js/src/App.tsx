@@ -5,6 +5,9 @@ import {
 import Home from './pages/Home'
 import Register from './pages/Register'
 import Login  from './pages/Login'
+import { Game } from './pages/Game'
+import { Info } from './pages/Info'
+import { Stats } from './pages/Stats'
 
 const router = createBrowserRouter([
     {
@@ -18,6 +21,18 @@ const router = createBrowserRouter([
     {
         "path": "/login",
         "element": <Login />
+    },
+    {
+        "path": "/game/:id",
+        "element": <Game />
+    }, 
+    {
+        "path": "/stats",
+        "element": <Stats />
+    },
+    {
+        "path": "/info",
+        "element": <Info />
     }
 ])
 

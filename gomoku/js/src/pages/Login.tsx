@@ -25,4 +25,3 @@ export default function Login()  : React.ReactElement {
         <Auth type= {"Login"} onClick={onClick}/>
     )
 }
-
