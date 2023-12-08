@@ -4,6 +4,7 @@ import com.isel.daw.gomoku.domain.*
 import com.isel.daw.gomoku.dtos.RuleSetInputModel
 import com.isel.daw.gomoku.repositories.TransactionManager
 import com.isel.daw.gomoku.utils.Either
+import isel.daw.proj.dtos.WaitingEntry
 import org.springframework.stereotype.Component
 import java.util.UUID
 
@@ -30,7 +31,8 @@ class GameServices(
     }
 
     fun start(player : User, ruleSet: RuleSetInputModel) : GameServiceResult {
-
+        val game = transactionManager.run { it.gamesRepository.getByUser(player) }
+        if(game != null) return Either.Error(GameServicesError.AlreadyInAGame())
         val rules = RuleSet(
             boardSize = ruleSet.boardSize,
             variant = ruleSet.variant,
@@ -38,6 +40,23 @@ class GameServices(
             placingTime = ruleSet.placingTime
         )
         var result : RoundResult
+        val waitingEntry : WaitingEntry? = transactionManager.run { it.gamesRepository.searchForWaitingEntry(rules) }
+
+        if(waitingEntry != null){
+            if(waitingEntry.player1 == player) return Either.Error(GameServicesError.AlreadySearching())
+            if(waitingEntry.ruleSet == rules){
+                transactionManager.run { it.gamesRepository.deleteEntryFromWaitingList(waitingEntry.player1) }
+                result = gameLogic.start(waitingEntry.player1, player, rules)
+                if(result is RoundResultWithGame.StartPlacingPhase){
+                    transactionManager.run {
+                        it.gamesRepository.insert(result.game)
+                    }
+                    return Either.Success(GameServicesResult.roundToServicesResult(result) as GameServicesSuccess)
+                }
+            }
+        }
+
+        /*
         for(entry in waitingList){
             if(entry.key == player) return Either.Error(GameServicesError.AlreadySearching())
             if(entry.value == rules){
@@ -51,8 +70,10 @@ class GameServices(
                 }
             }
         }
-
         waitingList[player] = rules
+         */
+
+        transactionManager.run { it.gamesRepository.insertToWaitingList(WaitingEntry(player, rules)) }
         return Either.Success(GameServicesSuccess.WaitingForPlayer())
     }
 

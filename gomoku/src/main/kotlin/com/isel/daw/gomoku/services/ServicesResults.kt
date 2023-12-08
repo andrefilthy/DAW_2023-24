@@ -35,8 +35,7 @@ sealed class GameServicesError(
 
 ) : GameServicesResult(){
     class GameNotFound() : GameServicesError(
-        "GameNotFound", "The specified game could not be retrieved", 404
-    )
+        "GameNotFound", "The specified game could not be retrieved", 404)
     class NotAPlayer() : GameServicesError(
         "NotAPlayer", "Request by a player who is not playing the game", 403)
     class NotAValidPlay() : GameServicesError(
@@ -46,8 +45,9 @@ sealed class GameServicesError(
     class NotYourTurn() : GameServicesError(
         "NotYourTurn", "It is not your turn to play", 403)
     class AlreadySearching() : GameServicesError(
-        "AlreadySearching", "You are already searching for a game, cannot perform that action", 403
-    )
+        "AlreadySearching", "You are already searching for a game, cannot perform that action", 403)
+    class AlreadyInAGame() : GameServicesError(
+        "AlreadyInGame", "You are currently in an uncompleted game, cannot perform that action", 403)
 }
 
 sealed class GameServicesSuccess(
