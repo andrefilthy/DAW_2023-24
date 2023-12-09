@@ -37,7 +37,7 @@ data class UserListOutputModel(
                 link(URI("/user/${user.username}"), LinkRelation("self"))
             }
         }
-
+        link(URI("/"), LinkRelation("home"))
         link(URI("/stats"), LinkRelation("self"))
     }
 }
