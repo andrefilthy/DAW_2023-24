@@ -1,11 +1,15 @@
 import * as React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { LoginUser } from '../ApiCalls'
+import {useSetToken, useSetUsername, useToken } from '../authContainer'
 import { Auth } from '../components/Auth'
 
-export default function Login()  : React.ReactElement {
-
+export default function Login() {
+    const setUsername = useSetUsername()
+    const setToken = useSetToken()
     const navigate = useNavigate()
+
+
     function onClick(){
         const username = document.getElementById("username") as HTMLInputElement
         const password = document.getElementById("password") as HTMLInputElement
@@ -14,13 +18,18 @@ export default function Login()  : React.ReactElement {
             const body = await resp.json()
             if(resp.status === 200){
                 localStorage.setItem("accessToken", body.access_token)
+                localStorage.setItem("username", body.username)
                 navigate("/")
             }else{
                 alert(body.message)
-            }   
+            }
+            
         }
         sendRequest()
+        
     }
+
+   
     return (
         <Auth type= {"Login"} onClick={onClick}/>
     )

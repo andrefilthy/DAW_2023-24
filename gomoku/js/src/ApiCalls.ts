@@ -1,5 +1,9 @@
 const rootPath = "api"
 
+export async function fetchInfo(){
+    return fetch(`${rootPath}/info`)
+}
+
 export async function fetchHome(token : string | undefined) {
     (token)
     if(token === undefined){

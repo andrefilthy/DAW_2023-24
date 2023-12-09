@@ -1,5 +1,9 @@
 import * as React from 'react'
+import { useNavigate } from 'react-router-dom'
+
 
 export function Info() : React.ReactElement {
-    return
+    const navigate = useNavigate()
+
+    return 
 }

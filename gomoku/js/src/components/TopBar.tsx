@@ -1,30 +1,27 @@
-import * as React from "react"
-import { useNavigate } from "react-router-dom"
+import * as React from 'react'
+import {Link, useNavigate} from 'react-router-dom'
+import {LinkRelation} from '../pages/Home'
 
-export type Link = {
-    name:string,
-    path:string
-}
-type Props = {
-    links : Link []
+type TopBarProps = {
+    home : LinkRelation
+    links: LinkRelation[]
 }
 
-export default function TopBar ({links}:Props) : React.ReactElement {
+export function TopBar({home, links}: TopBarProps): React.ReactElement {
     const navigate = useNavigate()
-
-    if(localStorage.getItem("accessToken") != null) {
-        links.splice(links.indexOf({name:"Logout", path:"/"}, 1)) 
-    }
-
-    function clearTokenAndNavigate(path:string){
-        localStorage.removeItem("accessToken")
-        navigate(path)
-    }
-
-    return(
-        <ul>  
-            { links.map(link => (<button key={link.name} onClick={() => navigate(link.path)}>{link.name}</button>))}
-            {localStorage.getItem("accessToken") && <button onClick={() => clearTokenAndNavigate("/")}>Logout</button> }
+    const token = localStorage.getItem("accessToken")
+   
+    return (
+        <ul>
+            <button onClick={() => {navigate(home.href)}}>{home.rel}</button>
+            { links.map( (link) => <button onClick={() => {navigate(link.href)}}>{link.rel}</button>) }
+            {token && <button onClick={logout}>logout</button>}
         </ul>
-    )
+    );
+
+    function logout(){
+        localStorage.removeItem("accessToken")
+        localStorage.removeItem("username")
+        navigate("/")
+    }
 }
