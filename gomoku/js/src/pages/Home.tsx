@@ -3,6 +3,7 @@ import {useState, useEffect} from 'react'
 import { TopBar } from '../components/TopBar'
 import { fetchHome } from '../ApiCalls'
 import { Authenticate } from '../components/Authenticate'
+import { useNavigate } from 'react-router-dom'
 
 
 export type LinkRelation = {
@@ -23,13 +24,13 @@ type HomeProps = {
     action : null
 }
 
-export default function Home(): React.ReactElement {
+export function Home(): React.ReactElement {
+    const navigate = useNavigate()
     const [props, setProps] = useState<HomeProps | null>(null)
 
     const token = localStorage.getItem("accessToken")
 
-    console.log(token)
-    const contents = token === undefined ? 
+    const contents = token == null ? 
         <Authenticate /> :
         <button onClick={() => {}}>Play</button>
 
@@ -39,10 +40,9 @@ export default function Home(): React.ReactElement {
             const sirenobj = await data.json()
             var arr = sirenobj.links as LinkRelation[]
             const self = arr.find(e => e.rel.includes("self"))
-
             setProps({
                 user : sirenobj.user,
-                self : arr.splice(arr.indexOf(self))[0],
+                self : arr.splice(arr.indexOf(self))[0],                
                 links : arr,
                 action : null
             })
@@ -55,9 +55,16 @@ export default function Home(): React.ReactElement {
         <div>
             {props && <div>
                 <h1>Home</h1>
+                {token && <button onClick={logout}>logout</button>}
                 {<TopBar home={props.self} links={props.links} />}
                 {contents}
             </div>}
         </div>
     )
+    function logout(){
+        localStorage.removeItem("accessToken")
+        localStorage.removeItem("username")
+        navigate("/")
+    }
 }
+

@@ -13,9 +13,7 @@ export function TopBar({home, links}: TopBarProps): React.ReactElement {
    
     return (
         <ul>
-            <button onClick={() => {navigate(home.href)}}>{home.rel}</button>
             { links.map( (link) => <button onClick={() => {navigate(link.href)}} key={link.href}>{link.rel}</button>) }
-            {token && <button onClick={logout}>logout</button>}
         </ul>
     );
 

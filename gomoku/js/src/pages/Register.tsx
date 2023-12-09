@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom"
 import { RegisterUser } from "../ApiCalls"
 import { Auth } from "../components/Auth"
 
-export default function Register() : React.ReactElement {
+export function Register() : React.ReactElement {
     
     const navigate = useNavigate()
     function onClick(){
