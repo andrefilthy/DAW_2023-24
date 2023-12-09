@@ -7,12 +7,12 @@ export default function Home():React.ReactElement
         ([
             {name:"Register", path:"/register"},
             {name:"Login", path: "/login"},
-            ])
+        ])
         :
-            ([
-                {name:"Play", path:"/game"},
-                {name:"Logout", path:"/"}
-            ] )
+        ([
+            {name:"Play", path:"/game"},
+            {name:"Logout", path:"/"}
+        ])
 
     return(
         <div>

@@ -6,7 +6,6 @@ import { Auth } from '../components/Auth'
 export default function Login()  : React.ReactElement {
 
     const navigate = useNavigate()
-
     function onClick(){
         const username = document.getElementById("username") as HTMLInputElement
         const password = document.getElementById("password") as HTMLInputElement
