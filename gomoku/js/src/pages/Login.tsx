@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { LoginUser } from '../ApiCalls'
 import { Auth } from '../components/Auth'
 
-export function Login() {
+export default function Login() {
     const navigate = useNavigate()
 
 

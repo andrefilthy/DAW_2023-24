@@ -1,21 +1,21 @@
 import * as React from 'react'
-import {
-    createBrowserRouter, Link, RouterProvider, useParams,
-} from 'react-router-dom'
-import {Home} from './pages/Home'
-import {Register} from './pages/Register'
-
+import {createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { AuthContainer, useToken} from './authContainer'
-import { Login } from './pages/Login'
+import Home from './pages/Home'
+import Register from './pages/Register'
+import Login  from './pages/Login'
 import { Game } from './pages/Game'
 import { Info } from './pages/Info'
 import { Stats } from './pages/Stats'
-
 
 const router = createBrowserRouter([
     {
         "path": "/",
         "element": <Home />
+    },
+    {
+        "path": "/register",
+        "element": <Register />
     },
     {
         "path": "/login",
@@ -32,11 +32,7 @@ const router = createBrowserRouter([
     {
         "path": "/info",
         "element": <Info />
-    },
-    {
-        "path": "/register",
-        "element": <Register />
-    },
+    }
 ])
 
 export function App() {

@@ -1,9 +1,10 @@
 import * as React from 'react'
 import {useState, useEffect} from 'react'
 import { TopBar } from '../components/TopBar'
-import { fetchHome } from '../ApiCalls'
+import { fetchHome, startGame  } from '../ApiCalls'
 import { Authenticate } from '../components/Authenticate'
 import { useNavigate } from 'react-router-dom'
+import { pollGame } from './Game'
 
 
 export type LinkRelation = {
@@ -24,7 +25,7 @@ type HomeProps = {
     action : null
 }
 
-export function Home(): React.ReactElement {
+export default function Home(): React.ReactElement {
     const navigate = useNavigate()
     const [props, setProps] = useState<HomeProps | null>(null)
 
@@ -34,7 +35,7 @@ export function Home(): React.ReactElement {
     const contents = token == null ? 
         <Authenticate /> :
         <div>Want to play, {username}?    
-        &nbsp;<button onClick={() => {}}>Play</button></div>
+        &nbsp;<button onClick={() => searchGame()}>Play</button></div>
         
 
     useEffect(() => {
@@ -64,6 +65,24 @@ export function Home(): React.ReactElement {
             </div>}
         </div>
     )
+
+    async function searchGame(){
+        const info = await startGame(token)
+        if(info.status == 201){
+            const data = await info.json()
+            navigate(`/game/${data.properties.gameID}`, { state : data})
+            return
+        }else if(info.status == 200){
+            pollGame(token).then(game => {
+                navigate(`/game/${game.properties.gameID}`, { state : game})
+            })
+        }else if(info.status == 403){
+            const data = await info.json()
+            alert(data.message)
+        }
+        
+    }
+
     function logout(){
         localStorage.removeItem("accessToken")
         localStorage.removeItem("username")
