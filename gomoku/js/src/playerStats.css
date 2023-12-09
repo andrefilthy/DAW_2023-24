@@ -1,0 +1,11 @@
+.player-stats {
+    border-bottom : 1px solid black;
+    height : 100px;
+}
+
+.stats-board {
+    width: 300px;
+    height: 500px;
+    border: 1px solid black;
+    overflow: auto;
+}

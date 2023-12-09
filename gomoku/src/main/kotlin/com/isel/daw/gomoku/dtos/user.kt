@@ -33,6 +33,7 @@ data class UserListOutputModel(
 ){
     fun toSiren() : SirenModel<UserListOutputModel> = siren(this){
         clazz("ranking")
+<<<<<<< HEAD
         if(offset>=size)
             action("prevPage",URI("/stats?size=${size}&offset=${offset-size}"),HttpMethod.GET,"application/json"){}
         if(offset + size < numberOfPlayers)
@@ -40,5 +41,16 @@ data class UserListOutputModel(
         link(URI("/stats?size=${size}&offset=${offset}"), LinkRelation("self"))
         link(URI("/"), LinkRelation("home"))
         link(URI("/info"), LinkRelation("info"))
+=======
+        action("home", URI("/"), HttpMethod.GET,"application/json"){}
+        action("getMore", URI("/stats"), HttpMethod.GET,"application/json"){}
+        for(user in users){
+            entity(user, LinkRelation("/user")){
+                link(URI("/user/${user.username}"), LinkRelation("self"))
+            }
+        }
+        link(URI("/"), LinkRelation("home"))
+        link(URI("/stats"), LinkRelation("self"))
+>>>>>>> 5705f8405d04cc6741691f1965eba1168b6c63b2
     }
 }
