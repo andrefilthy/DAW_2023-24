@@ -1,21 +1,26 @@
 import * as React from "react"
-//import {useState} from 'react'
 import TopBar, {Link} from '../components/TopBar'
-
-
-const links :Link [] = localStorage.getItem("accessToken") == null ? 
-    [
-        {name:"Register", path:"/register"},
-        {name:"Login", path: "/login"},
-    ] : 
-    [ 
-        {name:"Play", path:"/game"},
-        {name:"Logout", path:"/"}
-    ] 
-
+import { useState, useEffect } from "react"
 
 export default function Home():React.ReactElement
-{        return(
+{
+    const [links, setLinks] = useState<Link[]>([])
+    useEffect(() => {
+        console.log("HOME")
+        if(localStorage.getItem("accessToken") == null){
+            setLinks([
+                {name:"Register", path:"/register"},
+                {name:"Login", path: "/login"},
+            ])
+        } else {
+            setLinks([
+                {name:"Play", path:"/game"},
+                {name:"Logout", path:"/"}
+            ] )
+        }
+    }, [localStorage.getItem("accessToken")])
+
+    return(
         <div>
             <h1>Home</h1>
             {<TopBar links = {links} />}
