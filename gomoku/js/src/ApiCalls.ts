@@ -55,3 +55,19 @@ async function fetchAuthentication(type: string, username : string, password : s
         })
     })
 }
+
+export async function startGame(token : string){
+    return fetch(`/${rootPath}/game`, {
+        method : "POST",
+        headers : {
+            'Content-Type' : 'application/json',
+            'Authorization' : `Bearer ${token}`
+        },
+        body: JSON.stringify({
+            ruleSet : {
+                boardSize : 15,
+                placingTime : 125
+            }
+        })
+    })
+}

@@ -10,10 +10,11 @@ export type BoardType = {
 
 export type BoardProps = {
     board : BoardType,
-    selectedPiece : Cell
+    selectedPiece? : Cell,
+    placePiece? : (piece : Cell) => void
 }
 
-export function Board({board, selectedPiece} : BoardProps) : React.ReactElement {
+export function Board({board, selectedPiece, placePiece = null} : BoardProps) : React.ReactElement {
 
     const cellElements =  <div></div> 
     const BOARD_SIZE = 10
@@ -42,8 +43,7 @@ export function Board({board, selectedPiece} : BoardProps) : React.ReactElement 
     function onClickCell(position : CellPosition){
         if(!!selectedPiece){
             if(isPositionAvailable(position)){
-                // TODO ( Implentar a logica de colocar a peca )
-                //placePiece(selectedPiece)
+                placePiece(selectedPiece)
             }
             return
         }
