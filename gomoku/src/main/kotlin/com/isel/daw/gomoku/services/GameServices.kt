@@ -35,8 +35,8 @@ class GameServices(
         if(game != null) return Either.Error(GameServicesError.AlreadyInAGame())
         val rules = RuleSet(
             boardSize = ruleSet.boardSize,
-            variant = ruleSet.variant,
-            openingRules = ruleSet.openingRules,
+            //variant = ruleSet.variant,
+            //openingRules = ruleSet.openingRules,
             placingTime = ruleSet.placingTime
         )
         var result : RoundResult

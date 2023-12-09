@@ -1,14 +1,18 @@
 import * as React from "react"
-import {useState} from 'react'
+//import {useState} from 'react'
 import TopBar, {Link} from '../components/TopBar'
 
 
-const links :Link [] = 
-[
-    {name:"register", path:"/register"},
-    {name:"login", path: "/login"},
-    //Se user estiver logado, então aparecem links diferentes.
-]
+const links :Link [] = localStorage.getItem("accessToken") == null ? 
+    [
+        {name:"Register", path:"/register"},
+        {name:"Login", path: "/login"},
+    ] : 
+    [ 
+        {name:"Play", path:"/game"},
+        {name:"Logout", path:"/"}
+    ] 
+
 
 export default function Home():React.ReactElement
 {        return(

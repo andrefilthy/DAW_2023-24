@@ -12,9 +12,20 @@ type Props = {
 export default function TopBar ({links}:Props) : React.ReactElement {
 
     const navigate = useNavigate()
+
+    if(localStorage.getItem("accessToken") != null) {
+        links.splice(links.indexOf({name:"Logout", path:"/"}, 1)) 
+    }
+
+    function clearLocalStorageAndNavigate(path:string){
+        localStorage.clear()
+        navigate(path)
+    }
+
     return(
-        <ul>
-            { links.map(link => (<button onClick={() => navigate(link.path)}>{link.name}</button>)) }
+        <ul>  
+            { links.map(link => (<button key={link.name} onClick={() => navigate(link.path)}>{link.name}</button>))}
+            {localStorage.getItem("accessToken") && <button onClick={() => clearLocalStorageAndNavigate("/")}>Logout</button> }
         </ul>
     )
 }

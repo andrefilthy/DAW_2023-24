@@ -5,7 +5,7 @@ enum class Variant (
     val variantCode : Int
 ) {
 
-    FREESTULE(1),
+    FREESTYLE(1),
     SWAP(2),
     CARO(3),
     OMOK(4),
@@ -13,7 +13,7 @@ enum class Variant (
 
     companion object {
         fun fromString(variantCode: Int) = when (variantCode) {
-            1 -> FREESTULE
+            1 -> FREESTYLE
             2 -> SWAP
             3 -> CARO
             4 -> OMOK
@@ -22,7 +22,7 @@ enum class Variant (
         }
 
         fun toString(v: Variant) = when (v) {
-            FREESTULE -> "freestyle"
+            FREESTYLE -> "freestyle"
             SWAP -> "swap"
             CARO -> "caro"
             OMOK -> "omok"

@@ -14,6 +14,7 @@ export default function Login()  : React.ReactElement {
             const resp = await LoginUser(username.value, password.value)
             const body = await resp.json()
             if(resp.status === 200){
+                localStorage.setItem("accessToken", body.access_token)
                 navigate("/")
             }else{
                 alert(body.message)

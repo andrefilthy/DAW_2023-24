@@ -21,8 +21,8 @@ data class GameStartInputModel(
 
 data class RuleSetInputModel(
     val boardSize : Int,
-    val variant : Variant,
-    val openingRules : OpeningRules,
+    //val variant : Variant,
+    //val openingRules : OpeningRules,
     val placingTime : Int
 )
 
