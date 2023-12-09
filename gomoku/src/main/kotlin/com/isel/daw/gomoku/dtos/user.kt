@@ -15,13 +15,12 @@ data class UserOutputModel(
     val username: String,
     val numberOfGames : Int,
     val numberOfWins : Int
-){
-    //TODO("Siren output model")
-}
+)
 
 data class TokenOutputModel(
     val token_type : String,
     val access_token : String,
+    val username: String,
     val expires_on : Long
 )
 

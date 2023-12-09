@@ -29,10 +29,13 @@ export function Home(): React.ReactElement {
     const [props, setProps] = useState<HomeProps | null>(null)
 
     const token = localStorage.getItem("accessToken")
+    const username = localStorage.getItem("username")
 
     const contents = token == null ? 
         <Authenticate /> :
-        <button onClick={() => {}}>Play</button>
+        <div>Want to play, {username}?    
+        &nbsp;<button onClick={() => {}}>Play</button></div>
+        
 
     useEffect(() => {
         const fetchData = async () => {
@@ -55,7 +58,7 @@ export function Home(): React.ReactElement {
         <div>
             {props && <div>
                 <h1>Home</h1>
-                {token && <button onClick={logout}>logout</button>}
+                {token && <button onClick={logout}>Logout</button>}
                 {<TopBar home={props.self} links={props.links} />}
                 {contents}
             </div>}

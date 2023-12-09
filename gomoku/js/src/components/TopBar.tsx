@@ -9,17 +9,10 @@ type TopBarProps = {
 
 export function TopBar({home, links}: TopBarProps): React.ReactElement {
     const navigate = useNavigate()
-    const token = localStorage.getItem("accessToken")
    
     return (
         <ul>
             { links.map( (link) => <button onClick={() => {navigate(link.href)}} key={link.href}>{link.rel}</button>) }
         </ul>
     );
-
-    function logout(){
-        localStorage.removeItem("accessToken")
-        localStorage.removeItem("username")
-        navigate("/")
-    }
 }

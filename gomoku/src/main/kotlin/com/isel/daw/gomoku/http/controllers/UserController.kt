@@ -3,6 +3,7 @@ package com.isel.daw.gomoku.http.controllers
 import com.isel.daw.gomoku.dtos.ProblemOutputModel
 import com.isel.daw.gomoku.dtos.TokenOutputModel
 import com.isel.daw.gomoku.dtos.UserInputModel
+import com.isel.daw.gomoku.dtos.UserProblem
 import com.isel.daw.gomoku.services.UserCreationError
 import com.isel.daw.gomoku.services.UserLoginError
 import com.isel.daw.gomoku.services.UserServices
@@ -19,7 +20,7 @@ class UserController(val userServices: UserServices) {
     @PostMapping(PathTemplate.register)
     fun register(
         @RequestBody userInput : UserInputModel
-    ) : ResponseEntity<*> {
+    ) : ResponseEntity<*>{
 
         // TODO("HEADERS: LOCATION")
         val res = userServices.createUser(userInput.username, userInput.password)
@@ -31,14 +32,15 @@ class UserController(val userServices: UserServices) {
                         TokenOutputModel(
                             "Bearer",
                             token.tokenValidation.validationInfo,
+                            token.userName,
                             token.expires_on.epochSecond
                         )
                     )
             }
             is Either.Error -> when(res.value){
-                is UserCreationError.UserAlreadyExists-> ResponseEntity.status(409).body(ProblemOutputModel("UserAlreadyExists", "Username already exists", null))
-                is UserCreationError.WeakPasswordError-> ResponseEntity.status(400).body(ProblemOutputModel("WeakPasswordError", "Your password is too weak", null))
-                is UserCreationError.TokenCreationWentWrong-> ResponseEntity.status(500).body(ProblemOutputModel("TokenCreationWentWrong", "Oops...Token Creation went wrong", null))
+                is UserCreationError.UserAlreadyExists-> UserProblem.response(409, UserProblem.userNameAlreadyExists)
+                is UserCreationError.WeakPasswordError-> UserProblem.response(400, UserProblem.weakPassword)
+                is UserCreationError.TokenCreationWentWrong-> ResponseEntity.status(500).body(ProblemOutputModel("TokenCreationWentWrong", "Token Creation went wrong",null))
             }
         }
 
@@ -60,14 +62,15 @@ class UserController(val userServices: UserServices) {
                         TokenOutputModel(
                             "Bearer",
                             token.tokenValidation.validationInfo,
+                            token.userName,
                             token.expires_on.epochSecond
                         )
                     )
             }
             is Either.Error -> {
                 when (res.value){
-                    is UserLoginError.UserNotFound -> ResponseEntity.status(404).body(ProblemOutputModel("UserNotFound", "User with given Username was not found", null))
-                    is UserLoginError.WrongPassword -> ResponseEntity.status(401).body(ProblemOutputModel("WrongPassword", "User password does not match", null))
+                    is UserLoginError.UserNotFound -> UserProblem.response(404, UserProblem.userNotFound)
+                    is UserLoginError.WrongPassword -> UserProblem.response(401, UserProblem.wrongPassword)
                 }
             }
         }
