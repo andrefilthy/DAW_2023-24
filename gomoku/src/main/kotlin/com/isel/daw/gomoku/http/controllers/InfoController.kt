@@ -36,7 +36,7 @@ class InfoController {
         private val author3 = AuthInfo(
             "André Ramalho",
             "44799@isel.alunos.pt",
-            44
+            44799
 
         )
         private val authorList : ArrayList<AuthInfo> = arrayListOf(author1, author2, author3)
@@ -44,7 +44,7 @@ class InfoController {
         private val infoModel = InfoModel(
             "Gomoku",
             "Gomoku board game",
-            "v0.1.0",
+            "v1.0.0",
             authorList
         )
     }

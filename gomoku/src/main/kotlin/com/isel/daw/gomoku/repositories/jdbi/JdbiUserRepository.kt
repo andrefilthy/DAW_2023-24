@@ -47,13 +47,26 @@ class JdbiUserRepository(private val handle : Handle) : UserRepository {
         handle.createQuery("""
               SELECT u.username, u.pwd, u.numberOfGames, u.numberOfWins FROM 
               (SELECT username, pwd, numberOfGames, numberOfWins, ROUND(numberofWins * 100.0/numberOfGames ,1) as percentage FROM dbo.user) u 
-              WHERE u.numberOfGames > 20 
-              ORDER BY u.percentage DESC 
-              FETCH FIRST :size ROWS ONLY;
+              WHERE u.numberOfGames >= 1
+              ORDER BY u.percentage DESC
+              OFFSET :offset ROWS
+              FETCH NEXT :size ROWS ONLY;
               """)
             .bind("size", size)
+            .bind("offset", offset)
             .mapTo<User>()
             .list()
+
+    override fun getNumberOfPlayers(): Int =
+        handle.createQuery("""
+           SELECT COUNT(us.username) FROM (
+                SELECT u.username, u.pwd, u.numberOfGames, u.numberOfWins FROM 
+                (SELECT username, pwd, numberOfGames, numberOfWins, ROUND(numberofWins * 100.0/numberOfGames ,1) as percentage FROM dbo.user) u 
+                WHERE u.numberOfGames >= 1
+              ) as us;
+              """)
+            .mapTo<Int>()
+            .one()
 
     override fun doesUserExist(username: String): Boolean {
         return handle.createQuery("select count(*) from dbo.User where username = :username")

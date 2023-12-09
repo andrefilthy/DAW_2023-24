@@ -20,6 +20,11 @@ export async function LoginUser(username : string, password : string) {
     return fetchAuthentication("login", username, password)
 }
 
+export async function getLeaderboard(page : number){
+    let size = 10
+    return fetch(`/${rootPath}/stats?size=${size}&offset=${size*(page-1)}`)
+}
+
 export async function getGameByUser(token : string) {
     return fetch(`/${rootPath}/game`, {
         headers : {

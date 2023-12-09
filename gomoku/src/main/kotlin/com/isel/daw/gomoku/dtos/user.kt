@@ -26,18 +26,19 @@ data class TokenOutputModel(
 )
 
 data class UserListOutputModel(
-    val users : List<UserOutputModel>
+    val users : List<UserOutputModel>,
+    val size : Int,
+    val offset : Int,
+    val numberOfPlayers : Int
 ){
     fun toSiren() : SirenModel<UserListOutputModel> = siren(this){
         clazz("ranking")
-        action("home", URI("/"), HttpMethod.GET,"application/json"){}
-        action("getMore", URI("/stats"), HttpMethod.GET,"application/json"){}
-        for(user in users){
-            entity(user, LinkRelation("/user")){
-                link(URI("/user/${user.username}"), LinkRelation("self"))
-            }
-        }
-
-        link(URI("/stats"), LinkRelation("self"))
+        if(offset>=size)
+            action("prevPage",URI("/stats?size=${size}&offset=${offset-size}"),HttpMethod.GET,"application/json"){}
+        if(offset + size < numberOfPlayers)
+            action("nextPage",URI("/stats?size=${size}&offset=${offset+size}"),HttpMethod.GET,"application/json"){}
+        link(URI("/stats?size=${size}&offset=${offset}"), LinkRelation("self"))
+        link(URI("/"), LinkRelation("home"))
+        link(URI("/info"), LinkRelation("info"))
     }
 }

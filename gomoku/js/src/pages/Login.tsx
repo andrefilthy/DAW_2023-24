@@ -1,12 +1,9 @@
 import * as React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { LoginUser } from '../ApiCalls'
-import {useSetToken, useSetUsername, useToken } from '../authContainer'
 import { Auth } from '../components/Auth'
 
 export default function Login() {
-    const setUsername = useSetUsername()
-    const setToken = useSetToken()
     const navigate = useNavigate()
 
 

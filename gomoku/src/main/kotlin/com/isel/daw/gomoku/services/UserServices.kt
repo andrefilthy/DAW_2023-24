@@ -81,6 +81,12 @@ class UserServices(
         }
     }
 
+    fun getNumberOfPlayers() : Int {
+        return transactionManager.run {
+            it.userRepository.getNumberOfPlayers()
+        }
+    }
+
     fun createToken(userName : String, password: String ) : TokenCreationResult{
         if(userName.isBlank() || password.isBlank())
             return Either.Error(TokenCreationError.InvalidUserOrPassword)
@@ -139,11 +145,12 @@ class UserServices(
         return Either.Error(TokenCreationError.InvalidUserOrPassword)
     }
 
-    fun getTopPlayers() : List<User>{
+    fun getTopPlayers(size : Int, offset: Int) : List<User>{
         return transactionManager.run {
-            it.userRepository.getTopPlayers(10,10)
+            it.userRepository.getTopPlayers(size,offset)
         }
     }
+
     companion object {
         val TOKEN_TTL: Duration = Duration.ofDays(1)
     }

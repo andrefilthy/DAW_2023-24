@@ -1,6 +1,5 @@
 import * as React from 'react'
 import {useState, useEffect} from 'react'
-import {useNavigate} from 'react-router-dom'
 import { TopBar } from '../components/TopBar'
 import { fetchHome } from '../ApiCalls'
 import { Authenticate } from '../components/Authenticate'
@@ -26,12 +25,11 @@ type HomeProps = {
 
 export default function Home(): React.ReactElement {
     const [props, setProps] = useState<HomeProps | null>(null)
-    const navigate = useNavigate()
 
     const token = localStorage.getItem("accessToken")
 
     console.log(token)
-    let contents = token === undefined ? 
+    const contents = token === undefined ? 
         <Authenticate /> :
         <button onClick={() => {}}>Play</button>
 
