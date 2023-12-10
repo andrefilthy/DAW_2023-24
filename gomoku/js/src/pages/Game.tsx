@@ -95,7 +95,7 @@ export function Game() : React.ReactElement {
     function renderGame() : React.ReactElement { 
         pollUntilTurn().then(res => setProps(res))
 
-        const board = setupBoards(props.properties.board, username)
+        const board = setupBoards(props.properties.board)
         return (
             <div className='game-container'>   
                 {gameInfo()}
@@ -106,7 +106,7 @@ export function Game() : React.ReactElement {
         )
     }
 
-    function setupBoards(board : BoardType, username : string) : BoardProps {
+    function setupBoards(board : BoardType) : BoardProps {
         const gamePhase = props.properties.phase
         if(gamePhase === GamePhase.PLACING){
             return {
@@ -124,9 +124,6 @@ export function Game() : React.ReactElement {
         let content = <></>
         const gamePhase = props.properties.phase
         const gameState = props.properties.state
-        console.log(gamePhase)
-        console.log(gameState)
-
         let className = 'game-info'
 
         if(gamePhase === GamePhase.PLACING){
@@ -185,6 +182,7 @@ export async function pollGame(token: string){
     }
     return data
 }
+
 
 function sirenToProps(sirenJson: { class: any[]; links: any[]; entities: any[]; actions: any; properties: { resultInfo: any; player1: any; player2: any; board: any; state: any; phase: any } }) : Props{
     const clazz = sirenJson.class[0]

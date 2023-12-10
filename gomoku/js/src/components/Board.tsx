@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import '../game.css'
 import { Cell, CellPosition } from './Cell'
 
@@ -16,8 +16,9 @@ export type BoardProps = {
 
 export function Board({board, selectedPiece, placePiece = null} : BoardProps) : React.ReactElement {
 
-    const cellElements =  <div></div> 
-    const BOARD_SIZE = 10
+    const [cellElements, setCells] = useState<React.ReactElement[]>(null)
+
+    const BOARD_SIZE = 15
 
     useEffect(() => { createCells()})
  
@@ -35,9 +36,26 @@ export function Board({board, selectedPiece, placePiece = null} : BoardProps) : 
             for(let j = 0; j < BOARD_SIZE; j++){
                 let className = getCellClass(board.cells.charAt(BOARD_SIZE * i + j))
                 className = className.concat(" clickable-cell")
-                cells.push(<Cell position={{l: i, c: j}} className={className} onClick={onClickCell}></Cell>)
+                cells.push(<Cell position={{l: i, c: j}} className={className} onHover={onHoverCell} onClick={onClickCell}></Cell>)
             }
         }
+        setCells(cells)
+    }
+
+
+    function onHoverCell(position : CellPosition){
+        const cells = []
+        for(let i = 0; i < BOARD_SIZE; i++){
+            for(let j = 0; j < BOARD_SIZE; j++){
+                let className = getCellClass(board.cells.charAt(BOARD_SIZE * i + j))
+                className = className.concat(" clickable-cell")
+                let isAvailable : boolean = isPositionAvailable(position)
+                if(!isAvailable){
+                    cells.push(<Cell position={{l: i, c: j}} className={className} onHover={onHoverCell} onClick={onClickCell}></Cell>)
+                }  
+            }
+        }
+        setCells(cells)
     }
 
     function onClickCell(position : CellPosition){
