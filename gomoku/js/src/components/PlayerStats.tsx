@@ -10,8 +10,9 @@ export function PlayerStats({username, numberOfGames, numberOfWins} : Player): R
     let winRate = (numberOfWins/numberOfGames) * 100
     return (
         <div className="player-stats">
-            <p>username: {username}</p>
-            <p>numberOfWins : {numberOfWins}</p>
+            <p>Username: {username}</p>
+            <p>Number Of Games: {numberOfGames}</p>
+            <p>Number Of Wins : {numberOfWins}</p>
             <p>Win Rate : {winRate.toFixed(2)}%</p>
         </div>
     ) 

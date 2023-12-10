@@ -1,3 +1,5 @@
+import { CellPosition } from "./components/Cell"
+
 const rootPath = "api"
 
 export async function fetchInfo(){
@@ -68,6 +70,19 @@ export async function startGame(token : string){
                 boardSize : 15,
                 placingTime : 125
             }
+        })
+    })
+}
+
+export async function postPlay(id: string, play: CellPosition, token: string){
+    return fetch(`/${rootPath}/game/${id}/set`, {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+            play : play
         })
     })
 }

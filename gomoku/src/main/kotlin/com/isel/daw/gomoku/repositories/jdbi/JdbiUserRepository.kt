@@ -30,7 +30,11 @@ class JdbiUserRepository(private val handle : Handle) : UserRepository {
             .singleOrNull()
 
     override fun update(user: User) {
-        TODO("Not yet implemented")
+        handle.createUpdate("UPDATE dbo.User SET numberOfGames = :numberOfGames, numberOfWins = :numberOfWins WHERE username=:username")
+            .bind("numberOfGames", user.numberOfGames)
+            .bind("numberOfWins", user.numberOfWins)
+            .bind("username", user.username)
+            .execute()
     }
 
     override fun insert(user: User) : String =

@@ -2,7 +2,7 @@ import * as React from 'react'
 import { useEffect, useState } from 'react'
 import { Board, BoardProps, BoardType } from '../components/Board'
 import { Cell, CellPosition } from '../components/Cell'
-import { getGame, getGameByUser } from '../ApiCalls'
+import { getGame, getGameByUser, postPlay } from '../ApiCalls'
 import { useLocation, useParams } from 'react-router-dom'
 import { User, LinkRelation} from './Home'
 var _ = require('lodash')
@@ -111,8 +111,18 @@ export function Game() : React.ReactElement {
             return {
                 board: board,
                 placePiece: placePiece,
+                play: play
             }
         }
+        else {
+            return  {board: board}
+        }
+    }
+
+    async function play(position: CellPosition) {
+        const res = await postPlay(id, position, token)
+        const body = await res.json()
+        setProps(sirenToProps(body))
     }
 
     async function placePiece(piece : Cell) {

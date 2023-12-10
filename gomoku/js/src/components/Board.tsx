@@ -12,9 +12,10 @@ export type BoardProps = {
     board : BoardType,
     selectedPiece? : Cell,
     placePiece? : (piece : Cell) => void
+    play? : (position: CellPosition) => void
 }
 
-export function Board({board, selectedPiece, placePiece = null} : BoardProps) : React.ReactElement {
+export function Board({board, selectedPiece, placePiece = null, play = null} : BoardProps) : React.ReactElement {
 
     const [cellElements, setCells] = useState<React.ReactElement[]>(null)
 
@@ -35,8 +36,16 @@ export function Board({board, selectedPiece, placePiece = null} : BoardProps) : 
         for(let i = 0; i < BOARD_SIZE; i++){
             for(let j = 0; j < BOARD_SIZE; j++){
                 let className = getCellClass(board.cells.charAt(BOARD_SIZE * i + j))
-                className = className.concat(" clickable-cell")
-                cells.push(<Cell position={{l: i, c: j}} className={className} onHover={onHoverCell} onClick={onClickCell}></Cell>)
+                if(!!selectedPiece){
+                    className = className.concat(" clickable-cell")
+                    cells.push(<Cell position={{l: i, c: j}} className={className} onHover={onHoverCell} onClick={onClickCell}></Cell>)
+                }
+                else if(!!play){
+                    className = className.concat(" clickable-cell")
+                    cells.push(<Cell position={{l: i, c: j}} className={className} onClick={play}></Cell>)
+                }else{
+                    cells.push(<Cell position={{l: i, c: j}} className={className}></Cell>)
+                }
             }
         }
         setCells(cells)
