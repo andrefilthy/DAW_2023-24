@@ -5,8 +5,7 @@ import { Cell, CellPosition } from '../components/Cell'
 import { getGame, getGameByUser } from '../ApiCalls'
 import { useLocation, useParams } from 'react-router-dom'
 import { User, LinkRelation} from './Home'
-import * as _ from 'lodash'
-
+var _ = require('lodash')
 
 export enum GameState {
     NEXT_PLAYER1 = "NEXT_PLAYER1",
@@ -129,7 +128,7 @@ export function Game() : React.ReactElement {
         if(gamePhase === GamePhase.PLACING){
             content = isPlayerTurn() ? 
                 <p className={className}>Your turn to play</p> :
-                <p className={className}>Opponent's turn to play</p>
+                <p className={className}>Opponent&#39;s turn to play</p>
         }
         else{
             if(isPlayer1()){
