@@ -131,7 +131,7 @@ export function Game() : React.ReactElement {
         if(gamePhase === GamePhase.PLACING){
             content = isPlayerTurn() ? 
                 <p className={className}>Your turn to play</p> :
-                <p className={className}>Opponent's turn to play</p>
+                <p className={className}>Opponent&#39;s turn to play</p>
         }
         else{
             if(isPlayer1()){
