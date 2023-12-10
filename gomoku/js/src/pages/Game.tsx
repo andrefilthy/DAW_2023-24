@@ -5,8 +5,7 @@ import { Cell, CellPosition } from '../components/Cell'
 import { getGame, getGameByUser } from '../ApiCalls'
 import { useLocation, useParams } from 'react-router-dom'
 import { User, LinkRelation} from './Home'
-import * as _ from 'lodash'
-
+var _ = require('lodash')
 
 export enum GameState {
     NEXT_PLAYER1 = "NEXT_PLAYER1",
