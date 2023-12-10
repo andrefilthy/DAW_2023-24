@@ -1,8 +1,8 @@
-.game-container{
+.game-container {
     min-width: 990px;
     max-width: 1080px;
     position: relative;
-    margin: auto;
+    margin: auto; 
     z-index: 1;
     background: #fff;
     min-height: 990px;
@@ -17,11 +17,12 @@
 .board{
     align-self: center;
     position: sticky;
+    margin: auto; 
     top: 1em;
-    width: 50vw;
-    height: 50vw;
-    min-width: 200px;
-    min-height: 200px;
+    width: 200vw;
+    height: 200vw;
+    min-width: 500px;
+    min-height: 500px;
     max-width: calc(30vh - 2em);
     max-height: calc(30vh - 2em);
     overflow: hidden;

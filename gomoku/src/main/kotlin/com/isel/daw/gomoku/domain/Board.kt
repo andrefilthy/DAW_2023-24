@@ -71,8 +71,10 @@ data class Board(private val cells : Array<Array<CellState>>, val boardSize: Int
         for (i in 0 until boardSize) {
             val diagonal1 = cells.slice(i until boardSize).mapIndexed { index, cell -> cell[index].char }
             val diagonal2 = cells.slice(0 until boardSize - i).mapIndexed { index, cell -> cell[index + i].char }
+            val diagonal3 = cells.slice(0 until i + 1).mapIndexed { index, cell -> cell[boardSize - index - 1].char }
 
-            if (diagonal1.joinToString("").contains(target) || diagonal2.joinToString("").contains(target)) {
+
+            if (diagonal1.joinToString("").contains(target) || diagonal2.joinToString("").contains(target) || diagonal3.joinToString("").contains(target)) {
                 return true
             }
         }

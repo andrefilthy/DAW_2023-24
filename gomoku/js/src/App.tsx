@@ -1,6 +1,6 @@
 import * as React from 'react'
 import {createBrowserRouter, RouterProvider } from 'react-router-dom'
-import { AuthContainer, useToken} from './authContainer'
+import { AuthContainer } from './authContainer'
 import Home from './pages/Home'
 import Register from './pages/Register'
 import Login  from './pages/Login'
