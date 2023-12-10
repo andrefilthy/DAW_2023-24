@@ -122,7 +122,8 @@ export function Game() : React.ReactElement {
     async function play(position: CellPosition) {
         const res = await postPlay(id, position, token)
         const body = await res.json()
-        setProps(sirenToProps(body))
+        console.log(body.error)
+        if(body.error == null) setProps(sirenToProps(body))
     }
 
     async function placePiece(piece : Cell) {
