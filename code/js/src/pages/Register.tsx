@@ -1,6 +1,6 @@
 import * as React from "react"
 import { useNavigate } from "react-router-dom"
-import { LoginUser, RegisterUser } from "../ApiCalls"
+import { RegisterUser } from "../ApiCalls"
 import { Auth } from "../components/Auth"
 
 export default function Register() : React.ReactElement {
@@ -13,8 +13,6 @@ export default function Register() : React.ReactElement {
             const resp = await RegisterUser(username.value, password.value)
             const body = await resp.json()
             if(resp.status === 201){
-                localStorage.setItem("accessToken", body.accessToken)
-                console.log(localStorage.getItem("accessToken"))
                 navigate("/")
             }else{
                 alert(body.message)

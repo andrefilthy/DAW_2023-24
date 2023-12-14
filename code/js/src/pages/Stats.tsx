@@ -51,7 +51,7 @@ export function Stats(): React.ReactElement {
             const sirenobj = await res.json()
             
             var arr = sirenobj.links as LinkRelation[]
-            const home = arr.find(e => e.rel.includes("home"))
+            const home = arr.find(e => e.rel.includes("self"))
             
             setProps({
                 home : arr.splice(arr.indexOf(home),1)[0],
@@ -63,7 +63,6 @@ export function Stats(): React.ReactElement {
         fetchData()
     },[page])
 
-    //TODO(Handle out of bounds requests to stats page)
     return (
         <div>
             {props &&   
