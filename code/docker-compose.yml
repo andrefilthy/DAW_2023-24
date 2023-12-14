@@ -1,0 +1,39 @@
+version: "3.3"
+
+services:
+
+
+  db-tests:
+    container_name: db-tests
+    build:
+      context: ./jvm/src/main/kotlin/com/isel/daw/gomoku/data
+      dockerfile: Dockerfile
+    environment:
+      - POSTGRESQL_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+    ports:
+      - 5432:5432
+
+  gomoku-service:
+    container_name: gomoku
+    hostname: gomoku-service
+    build:
+      context: ./jvm
+      dockerfile: Dockerfile
+    environment:
+      JDBC_DATABASE_URL: "jdbc:postgresql://db-tests:5432/postgres?user=postgres&password=postgres"
+      PORT: 8081
+    ports:
+      - 8081:8081
+
+  nginx:
+    container_name: nginx
+    image: nginx
+    ports:
+      - 8080:8080
+    volumes:
+      - ./:/etc/nginx
+      - ./js/dist:/static/
+    depends_on:
+      - gomoku-service
