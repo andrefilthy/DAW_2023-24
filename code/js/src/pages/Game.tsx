@@ -5,6 +5,7 @@ import { Cell, CellPosition } from '../components/Cell'
 import { getGame, getGameByUser, postPlay } from '../ApiCalls'
 import { useLocation, useParams } from 'react-router-dom'
 import { User, LinkRelation} from './Home'
+import { useNavigate } from 'react-router-dom'
 var _ = require('lodash')
 
 export enum GameState {
@@ -66,6 +67,7 @@ export function Game() : React.ReactElement {
     const { state }  = useLocation()
     const token = localStorage.getItem("accessToken")
     const { id } = useParams()
+    const navigate = useNavigate()
 
     const contents = props === null ?
         <div></div> :
@@ -95,12 +97,14 @@ export function Game() : React.ReactElement {
         pollUntilTurn().then(res => setProps(res))
 
         const board = setupBoards(props.properties.board)
+        var gamePhase = props.properties.phase
         return (
             <div className='game-container'>   
                 {gameInfo()}
                 <div className='player-board'>
                     <Board {...board}/>
                 </div>
+                {gamePhase == GamePhase.COMPLETED && <button onClick={() => navigate("/")} >Ir para o menú </button>}
             </div>
         )
     }
@@ -110,7 +114,6 @@ export function Game() : React.ReactElement {
         if(gamePhase === GamePhase.PLACING){
             return {
                 board: board,
-                placePiece: placePiece,
                 play: play
             }
         }
@@ -124,10 +127,6 @@ export function Game() : React.ReactElement {
         const body = await res.json()
         console.log(body.error)
         if(body.error == null) setProps(sirenToProps(body))
-    }
-
-    async function placePiece(piece : Cell) {
-        // TODO ( Colocar uma peca no tabuleiro)
     }
 
     function gameInfo() : React.ReactElement{
