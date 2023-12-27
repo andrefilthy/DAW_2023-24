@@ -23,7 +23,7 @@ export async function LoginUser(username : string, password : string) {
 }
 
 export async function getLeaderboard(page : number){
-    let size = 10
+    const size = 10
     return fetch(`/${rootPath}/stats?size=${size}&offset=${size*(page-1)}`)
 }
 
@@ -42,6 +42,18 @@ export async function getGame(id: string, token: string) {
             'Content-Type' : 'application/json',
             'Authorization' : `Bearer ${token}`
         }
+    })
+}
+
+export async function deleteFromWaitingList(username: string) {
+    return fetch(`${rootPath}/removeFromLobby`, {
+        method:"DELETE",
+        headers : {
+            'Content-Type' : 'application/json'
+        },
+        body: JSON.stringify({
+            'username' : username
+        })
     })
 }
 
@@ -71,6 +83,17 @@ export async function startGame(token : string){
                 placingTime : 125
             }
         })
+    })
+}
+
+export async function giveUpGame(token : string, id : string){
+    return fetch(`/${rootPath}/game/${id}/giveup`, {
+        method : "POST", 
+        headers : {
+            'Content-Type' : 'application/json',
+            'Authorization' : `Bearer ${token}`
+        },
+        //do something here
     })
 }
 

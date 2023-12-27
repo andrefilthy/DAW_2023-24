@@ -1,7 +1,7 @@
 import * as React from 'react'
 import {useState, useEffect} from 'react'
 import { TopBar } from '../components/TopBar'
-import { fetchHome, startGame  } from '../ApiCalls'
+import { deleteFromWaitingList, fetchHome, startGame } from '../ApiCalls'
 import { Authenticate } from '../components/Authenticate'
 import { useNavigate } from 'react-router-dom'
 import { pollGame } from './Game'
@@ -35,14 +35,15 @@ export default function Home(): React.ReactElement {
     const contents = token == null ? 
         <Authenticate /> :
         <div>Want to play, {username}?    
-        &nbsp;<button onClick={() => searchGame()}>Play</button></div>
+        &nbsp;<button onClick={() => searchGame()}>Play</button>
+        &nbsp;<button onClick={() => removeFromWaitingList}>Leave Waiting List</button></div>
         
 
     useEffect(() => {
         const fetchData = async () => {
             const data = await fetchHome(token)
             const sirenobj = await data.json()
-            var arr = sirenobj.links as LinkRelation[]
+            const arr = sirenobj.links as LinkRelation[]
             const self = arr.find(e => e.rel.includes("self"))
             setProps({
                 user : sirenobj.user,
@@ -75,13 +76,28 @@ export default function Home(): React.ReactElement {
         }else if(info.status == 200){
             pollGame(token).then(game => {
                 navigate(`/game/${game.properties.gameID}`, { state : game})
+                return
             })
         }else if(info.status == 403){
             const data = await info.json()
             alert(data.message)
+            return
         }
-        
     }
+
+    async function removeFromWaitingList(){
+        const info = await deleteFromWaitingList(username)
+        if(info.status == 200){
+            alert("Foi removido da lista de espera.")
+            navigate(`/`)
+            return
+        }
+        else {
+            alert("Ocorreu um erro ao removê-lo da lista de espera")
+            navigate('/')
+            return
+        }
+    } 
 
     function logout(){
         localStorage.removeItem("accessToken")

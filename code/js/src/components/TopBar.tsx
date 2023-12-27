@@ -7,7 +7,7 @@ type TopBarProps = {
     links: LinkRelation[]
 }
 
-export function TopBar({home, links}: TopBarProps): React.ReactElement {
+export function TopBar({links}: TopBarProps): React.ReactElement {
     const navigate = useNavigate()
    
     return (

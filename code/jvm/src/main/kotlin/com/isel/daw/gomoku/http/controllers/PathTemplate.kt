@@ -13,7 +13,7 @@ object PathTemplate {
     const val place = "/{gameID}/set"
 
     /** INDEX CONTROLLER /index **/
-
+    const val deleteFromWaitingList = "removeFromLobby"
 
     /** USER CONTROLLER, /user **/
     const val register = "/register"

@@ -33,7 +33,7 @@ export function Info(): React.ReactElement {
         const fetchData = async () => {
             const data = await fetchInfo()
             const sirenobj = await data.json()
-            var arr = sirenobj.links as LinkRelation[]
+            const arr = sirenobj.links as LinkRelation[]
             const self = arr.find(e => e.rel.includes("self"))
             setProps({
                 home : arr.splice(arr.indexOf(self))[0],

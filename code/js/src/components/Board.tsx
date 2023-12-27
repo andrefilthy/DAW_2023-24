@@ -21,7 +21,7 @@ export function Board({board, selectedPiece, placePiece = null, play = null} : B
 
     const BOARD_SIZE = 15
 
-    useEffect(() => { createCells()})
+    useEffect(() => { createCells()}, [selectedPiece, play])
  
     return(
         <div className="board">
@@ -31,25 +31,48 @@ export function Board({board, selectedPiece, placePiece = null, play = null} : B
         </div>
     )
 
-    function createCells(){
-        const cells = []
-        for(let i = 0; i < BOARD_SIZE; i++){
-            for(let j = 0; j < BOARD_SIZE; j++){
-                let className = getCellClass(board.cells.charAt(BOARD_SIZE * i + j))
-                if(!!selectedPiece){
-                    className = className.concat(" clickable-cell")
-                    cells.push(<Cell position={{l: i, c: j}} className={className} onHover={onHoverCell} onClick={onClickCell}></Cell>)
-                }
-                else if(!!play){
-                    className = className.concat(" clickable-cell")
-                    cells.push(<Cell position={{l: i, c: j}} className={className} onClick={play}></Cell>)
-                }else{
-                    cells.push(<Cell position={{l: i, c: j}} className={className}></Cell>)
+    function createCells() {
+        const cells = [];
+        for (let i = 0; i < BOARD_SIZE; i++) {
+            for (let j = 0; j < BOARD_SIZE; j++) {
+                let className = getCellClass(board.cells.charAt(BOARD_SIZE * i + j));
+                const key = `${i}-${j}`; // Definição da chave única
+    
+                if (selectedPiece) {
+                    className = className.concat(" clickable-cell");
+                    cells.push(
+                        <Cell
+                            key={key} // Definição da chave para o elemento Cell
+                            position={{ l: i, c: j }}
+                            className={className}
+                            onHover={onHoverCell}
+                            onClick={onClickCell}
+                        ></Cell>
+                    );
+                } else if (play) {
+                    className = className.concat(" clickable-cell");
+                    cells.push(
+                        <Cell
+                            key={key} // Definição da chave para o elemento Cell
+                            position={{ l: i, c: j }}
+                            className={className}
+                            onClick={play}
+                        ></Cell>
+                    );
+                } else {
+                    cells.push(
+                        <Cell
+                            key={key} // Definição da chave para o elemento Cell
+                            position={{ l: i, c: j }}
+                            className={className}
+                        ></Cell>
+                    );
                 }
             }
         }
-        setCells(cells)
+        setCells(cells);
     }
+    
 
 
     function onHoverCell(position : CellPosition){
@@ -58,7 +81,7 @@ export function Board({board, selectedPiece, placePiece = null, play = null} : B
             for(let j = 0; j < BOARD_SIZE; j++){
                 let className = getCellClass(board.cells.charAt(BOARD_SIZE * i + j))
                 className = className.concat(" clickable-cell")
-                let isAvailable : boolean = isPositionAvailable(position)
+                const isAvailable : boolean = isPositionAvailable(position)
                 if(!isAvailable){
                     cells.push(<Cell position={{l: i, c: j}} className={className} onHover={onHoverCell} onClick={onClickCell}></Cell>)
                 }  
@@ -68,7 +91,7 @@ export function Board({board, selectedPiece, placePiece = null, play = null} : B
     }
 
     function onClickCell(position : CellPosition){
-        if(!!selectedPiece){
+        if(selectedPiece){
             if(isPositionAvailable(position)){
                 placePiece(selectedPiece)
             }

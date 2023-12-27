@@ -1,12 +1,12 @@
 import * as React from 'react'
 import { useEffect, useState } from 'react'
 import { Board, BoardProps, BoardType } from '../components/Board'
-import { Cell, CellPosition } from '../components/Cell'
-import { getGame, getGameByUser, postPlay } from '../ApiCalls'
+import { CellPosition } from '../components/Cell'
+import { getGame, getGameByUser, postPlay, giveUpGame } from '../ApiCalls'
 import { useLocation, useParams } from 'react-router-dom'
-import { User, LinkRelation} from './Home'
+import { LinkRelation} from './Home'
 import { useNavigate } from 'react-router-dom'
-var _ = require('lodash')
+const _ = require('lodash')
 
 export enum GameState {
     NEXT_PLAYER1 = "NEXT_PLAYER1",
@@ -73,19 +73,25 @@ export function Game() : React.ReactElement {
         <div></div> :
         renderGame()
 
-    useEffect(() => {
-        if(state != null) {
-            setProps(sirenToProps(state))
-            return 
-        }
-        const fetchData = async () => {
-            ("fetch")
-            const res = await getGame(id, token)
-            const data = await res.json()
-            setProps(sirenToProps(data))
-        }
-        fetchData()
-    }, [])
+        useEffect(() => {
+            if (state != null) {
+                setProps(sirenToProps(state));
+                return;
+            }
+        
+            const fetchData = async () => {
+                const res = await getGame(id, token);
+                const data = await res.json();
+                setProps(sirenToProps(data));
+        
+                if (data.properties.phase === GamePhase.COMPLETED) {
+                    return; // Interrompe as futuras chamadas quando o jogo estiver concluído
+                }
+            };
+        
+            fetchData();
+        }, [state, id, token]);
+    
 
     return(
         <div>
@@ -93,21 +99,37 @@ export function Game() : React.ReactElement {
         </div>
     )
 
-    function renderGame() : React.ReactElement { 
-        pollUntilTurn().then(res => setProps(res))
+    function renderGame() : React.ReactElement | null{
+        const gamePhase = props.properties.phase
+        if(gamePhase === GamePhase.PLACING){
+            pollUntilTurn().then(res => setProps(res))
+        }
 
         const board = setupBoards(props.properties.board)
-        var gamePhase = props.properties.phase
+        
         return (
             <div className='game-container'>   
                 {gameInfo()}
                 <div className='player-board'>
                     <Board {...board}/>
                 </div>
-                {gamePhase == GamePhase.COMPLETED && <button onClick={() => navigate("/")} >Ir para o menú </button>}
+                {gamePhase === GamePhase.PLACING && <button onClick={() => giveUp()}>Desistir</button>}
+                <button onClick={() => navigate("/")} >Ir para o menú </button>
             </div>
         )
     }
+
+    async function giveUp(){
+        const res = await giveUpGame(token, id)
+        if(res.status == 200) {
+            alert("Você desistiu do jogo.")
+            return
+        } else {
+            alert("Ocorreu um erro ao desistir do jogo")
+            return
+        }
+    }
+
 
     function setupBoards(board : BoardType) : BoardProps {
         const gamePhase = props.properties.phase
@@ -125,7 +147,9 @@ export function Game() : React.ReactElement {
     async function play(position: CellPosition) {
         const res = await postPlay(id, position, token)
         const body = await res.json()
-        console.log(body.error)
+        if(body.error != undefined) {
+            console.log(body.error)
+        }
         if(body.error == null) setProps(sirenToProps(body))
     }
 
@@ -133,7 +157,7 @@ export function Game() : React.ReactElement {
         let content = <></>
         const gamePhase = props.properties.phase
         const gameState = props.properties.state
-        let className = 'game-info'
+        const className = 'game-info'
 
         if(gamePhase === GamePhase.PLACING){
             content = isPlayerTurn() ? 
@@ -184,12 +208,24 @@ export function Game() : React.ReactElement {
     }
 }
 
-export async function pollGame(token: string){
-    let data = await getGameByUser(token).then(res => res.json())
-    while (data.error == 'GameNotFound'){
-        data = await getGameByUser(token).then(res => res.json())    
+export async function pollGame(token: string) {
+    async function checkGameStatus() {
+        return await getGameByUser(token).then(res => res.json());
     }
-    return data
+
+    async function poll() {
+        let data = await checkGameStatus();
+
+        while (data.error === 'GameNotFound') {
+            alert("Waiting for another player to start the game.")
+            await new Promise(resolve => setTimeout(resolve, 5000));
+            data = await checkGameStatus();
+        }
+
+        return data;
+    }
+
+    return await poll();
 }
 
 

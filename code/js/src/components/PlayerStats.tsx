@@ -7,7 +7,7 @@ export type Player = {
 }
 
 export function PlayerStats({username, numberOfGames, numberOfWins} : Player): React.ReactElement{
-    let winRate = (numberOfWins/numberOfGames) * 100
+    const winRate = (numberOfWins/numberOfGames) * 100
     return (
         <div className="player-stats">
             <p>Username: {username}</p>

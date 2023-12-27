@@ -14,7 +14,6 @@ class GameServices(
     val transactionManager : TransactionManager,
     private val gameLogic: GameLogic
 ) {
-    var waitingList : MutableMap<User, RuleSet> = mutableMapOf()
 
     fun getByUser(user: User) : GameServiceResult{
         val game = transactionManager.run { it.gamesRepository.getByUser(user) }?: return gameNotFound()
@@ -32,7 +31,7 @@ class GameServices(
 
     fun start(player : User, ruleSet: RuleSetInputModel) : GameServiceResult {
         val game = transactionManager.run { it.gamesRepository.getByUser(player) }
-        if(game != null) return Either.Error(GameServicesError.AlreadyInAGame())
+        if(game != null) return Either.Success(GameServicesSuccess.GameRetrieved(game))
         val rules = RuleSet(
             boardSize = ruleSet.boardSize,
             //variant = ruleSet.variant,
@@ -55,23 +54,6 @@ class GameServices(
                 }
             }
         }
-
-        /*
-        for(entry in waitingList){
-            if(entry.key == player) return Either.Error(GameServicesError.AlreadySearching())
-            if(entry.value == rules){
-                waitingList.remove(entry.key)
-                result = gameLogic.start(entry.key, player, rules)
-                if(result is RoundResultWithGame.StartPlacingPhase){
-                    transactionManager.run {
-                        it.gamesRepository.insert(result.game)
-                    }
-                    return Either.Success(GameServicesResult.roundToServicesResult(result) as GameServicesSuccess)
-                }
-            }
-        }
-        waitingList[player] = rules
-         */
 
         transactionManager.run { it.gamesRepository.insertToWaitingList(WaitingEntry(player, rules)) }
         return Either.Success(GameServicesSuccess.WaitingForPlayer())

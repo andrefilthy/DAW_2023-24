@@ -1,6 +1,5 @@
 import * as React from 'react'
 import {useState, useEffect} from 'react'
-import {Link, useNavigate} from 'react-router-dom'
 
 import { TopBar } from '../components/TopBar'
 import { getLeaderboard } from '../ApiCalls'
@@ -41,7 +40,6 @@ type Props = {
 }
 
 export function Stats(): React.ReactElement {
-    const navigate = useNavigate()
     const [props, setProps] = useState<Props | null>(null)
     const [page, setPage] = useState<number>(1)
 
@@ -50,7 +48,7 @@ export function Stats(): React.ReactElement {
             const res = await getLeaderboard(page)
             const sirenobj = await res.json()
             
-            var arr = sirenobj.links as LinkRelation[]
+            const arr = sirenobj.links as LinkRelation[]
             const home = arr.find(e => e.rel.includes("self"))
             
             setProps({
@@ -75,11 +73,11 @@ export function Stats(): React.ReactElement {
                     </div>
                     )}
                     </div>
-                    {props.actions.map(action =><button onClick={() => {
+                    
+                    {props.actions.map(action =><button key = {action.type} onClick={() => {
                         if(action.name == "nextPage") setPage(page+1)
                         else if (action.name == "prevPage") setPage(page-1)
                         }}>{action.name}</button>)}
-
                 </div>}
             
            

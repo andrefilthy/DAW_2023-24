@@ -50,6 +50,11 @@ class UserServices(
         return user
     }
 
+    fun removeFromWaitingList(player: User) : GameServiceResult {
+        transactionManager.run { it.gamesRepository.deleteEntryFromWaitingList(player) }
+        return Either.Success(GameServicesSuccess.RemovedFromWaitingList("Player removed from waiting list", 200))
+    }
+
     fun createUser(username: String, password: String): UserCreationResult {
         if(!userLogic.isSafePassword(password)){
             return Either.Error(UserCreationError.WeakPasswordError)

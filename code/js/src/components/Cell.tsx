@@ -14,7 +14,7 @@ export type CellPosition = {
 
 export function Cell({position, className, onClick= null, onHover = null} : Cell) : React.ReactElement {
     className = className.concat(" board-cell")
-    if(!!onClick){
+    if(onClick){
         className.concat(" clickable-cell")
     }
 
@@ -23,12 +23,12 @@ export function Cell({position, className, onClick= null, onHover = null} : Cell
             <div className={className} onClick={() => onClick(position)} onMouseOver={() => onHover(position)}></div>
         )
     }
-    else if(!!onClick) {
+    else if(onClick) {
         return(
             <div className={className} onClick={() => onClick(position) }></div>
         )
     }
-    else if(!!onHover){
+    else if(onHover){
         return(
             <div className={className} onMouseOver={() => onHover(position) }></div>
         )

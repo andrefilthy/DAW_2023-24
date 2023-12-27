@@ -13,6 +13,7 @@ data class HomeOutputModel(
     fun toSiren() : SirenModel<HomeOutputModel> = siren(this){
         clazz("home")
         if(user != null)  action("start game",URI("/game"),HttpMethod.POST,"application/json"){}
+        if(user != null)  action("delete from waiting list",URI("/game"),HttpMethod.DELETE,"application/json"){}
         if(user == null)  link(URI("/register"),LinkRelation("register"))
         if(user == null)  link(URI("/login"),LinkRelation("login"))
         link(URI("/stats"),LinkRelation("stats"))

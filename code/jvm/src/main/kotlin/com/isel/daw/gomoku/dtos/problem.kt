@@ -4,7 +4,6 @@ import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import java.net.URI
 
-// TODO(Remove ProblemOutputModel and create other problem classes: Game, Info...)
 data class ProblemOutputModel(
     val error : String,
     val message : String,

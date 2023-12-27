@@ -22,6 +22,16 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 
+
+/*TODO:
+*  - Fazer com que o botão de deixar a waiting list funcione
+*  - Fazer com que o botão de desistir funcione (falta implementar backend)
+*  - Corrigir o erro 404 que fica a aparecer quando se procura por um jogo mas ainda não existe (é suposto não aparecer erro e ficar apenas à espera do 2º jogador)
+*  - Adicionar um timer para fazer poll apenas de 2 em 2 segundos por exemplo
+*  - Implementar testes backend
+*  - Docker
+*  - Outros detalhes
+ */
 @SpringBootApplication
 class GomokuApplication {
 //docker build -t gomoku:1
