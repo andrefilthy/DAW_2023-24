@@ -45,6 +45,7 @@ export async function getGame(id: string, token: string) {
     })
 }
 
+/*
 export async function deleteFromWaitingList(username: string) {
     return fetch(`${rootPath}/removeFromLobby`, {
         method:"DELETE",
@@ -55,7 +56,8 @@ export async function deleteFromWaitingList(username: string) {
             'username' : username
         })
     })
-}
+} 
+*/
 
 async function fetchAuthentication(type: string, username : string, password : string) {
     return fetch(`/${rootPath}/${type}`, { 

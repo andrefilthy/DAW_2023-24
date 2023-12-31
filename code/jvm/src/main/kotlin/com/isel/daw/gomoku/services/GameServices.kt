@@ -56,7 +56,7 @@ class GameServices(
         }
 
         transactionManager.run { it.gamesRepository.insertToWaitingList(WaitingEntry(player, rules)) }
-        return Either.Success(GameServicesSuccess.WaitingForPlayer())
+        return Either.Success(GameServicesResult.roundToServicesResult(EmptyRoundResult.WaitingForOtherPlayer) as GameServicesSuccess)
     }
 
     fun playRound(gameID : UUID, player : User, plays : Play) : GameServiceResult {

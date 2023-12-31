@@ -54,17 +54,18 @@ sealed class GameServicesSuccess(
     open val statusCode: Int
 ) : GameServicesResult(){
 
-    data class WaitingForPlayer(val message: String, override val statusCode: Int) : GameServicesSuccess(statusCode)
-
+    data class WaitingForPlayer(val resInfo: String, val message: String, override val statusCode: Int) : GameServicesSuccess(statusCode)
+    data class GameRetrieved(val game: Game, val resInfo: String, override val statusCode: Int) : GameServicesSuccess(statusCode)
     data class RemovedFromWaitingList(val message: String, override val statusCode: Int) : GameServicesSuccess(statusCode)
 
     companion object {
 
-        fun GameRetrieved(game: Game): GameServicesSuccessWithGame.GameRetrieved {
-            return GameServicesSuccessWithGame.GameRetrieved(game, "GameRetrieved", 200)
+        fun GameRetrieved(game : Game) : GameRetrieved{
+            return GameRetrieved(game, "GameRetrieved", 200)
         }
+
         fun WaitingForPlayer() : WaitingForPlayer{
-            return WaitingForPlayer("Waiting for  other player", 200)
+            return WaitingForPlayer("JoinedLobby","Waiting for other player", 200)
         }
     }
     sealed class GameServicesSuccessWithGame(

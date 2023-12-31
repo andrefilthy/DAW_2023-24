@@ -29,6 +29,13 @@ class GameLogic(
         return RoundResultWithGame.StartPlacingPhase(game)
     }
 
+/*
+    fun giveUp(game: Game, player: User) : RoundResult{
+
+    }
+ */
+
+
     fun doPlace(game: Game, round : Round) : RoundResult{
         if(round.player.username != game.player1.username && round.player.username != game.player2.username){
             return EmptyRoundResult.NotAPlayer

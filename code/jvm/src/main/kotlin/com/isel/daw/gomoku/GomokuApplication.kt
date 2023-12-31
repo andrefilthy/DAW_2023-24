@@ -26,8 +26,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 /*TODO:
 *  - Fazer com que o botão de deixar a waiting list funcione
 *  - Fazer com que o botão de desistir funcione (falta implementar backend)
-*  - Corrigir o erro 404 que fica a aparecer quando se procura por um jogo mas ainda não existe (é suposto não aparecer erro e ficar apenas à espera do 2º jogador)
-*  - Adicionar um timer para fazer poll apenas de 2 em 2 segundos por exemplo
+*  - Parar de fazer polling se o jogador for para o menú, mesmo com o jogo a decorrer
 *  - Implementar testes backend
 *  - Docker
 *  - Outros detalhes

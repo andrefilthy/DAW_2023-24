@@ -1,7 +1,7 @@
 import * as React from 'react'
 import {useState, useEffect} from 'react'
 import { TopBar } from '../components/TopBar'
-import { deleteFromWaitingList, fetchHome, startGame } from '../ApiCalls'
+import { fetchHome, getGameByUser, startGame } from '../ApiCalls'
 import { Authenticate } from '../components/Authenticate'
 import { useNavigate } from 'react-router-dom'
 import { pollGame } from './Game'
@@ -36,7 +36,8 @@ export default function Home(): React.ReactElement {
         <Authenticate /> :
         <div>Want to play, {username}?    
         &nbsp;<button onClick={() => searchGame()}>Play</button>
-        &nbsp;<button onClick={() => removeFromWaitingList}>Leave Waiting List</button></div>
+        </div>
+        //&nbsp;<button onClick={() => removeFromWaitingList}>Leave Waiting List</button>
         
 
     useEffect(() => {
@@ -74,6 +75,9 @@ export default function Home(): React.ReactElement {
             navigate(`/game/${data.properties.gameID}`, { state : data})
             return
         }else if(info.status == 200){
+            const info1 = await getGameByUser(token)
+            if(info1.status === 404)
+                alert("Searching opponent... Click OK to procceed.")
             pollGame(token).then(game => {
                 navigate(`/game/${game.properties.gameID}`, { state : game})
                 return
@@ -85,7 +89,7 @@ export default function Home(): React.ReactElement {
         }
     }
 
-    async function removeFromWaitingList(){
+  /* async function removeFromWaitingList(){
         const info = await deleteFromWaitingList(username)
         if(info.status == 200){
             alert("Foi removido da lista de espera.")
@@ -97,7 +101,7 @@ export default function Home(): React.ReactElement {
             navigate('/')
             return
         }
-    } 
+    } */
 
     function logout(){
         localStorage.removeItem("accessToken")
