@@ -60,8 +60,8 @@ sealed class GameServicesSuccess(
 
     companion object {
 
-        fun GameRetrieved(game : Game) : GameRetrieved{
-            return GameRetrieved(game, "GameRetrieved", 200)
+        fun GameRetrieved(game : Game) : GameServicesSuccessWithGame.GameRetrieved {
+            return GameServicesSuccessWithGame.GameRetrieved(game, "GameRetrieved", 200)
         }
 
         fun WaitingForPlayer() : WaitingForPlayer{
