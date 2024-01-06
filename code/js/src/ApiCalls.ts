@@ -94,8 +94,7 @@ export async function giveUpGame(token : string, id : string){
         headers : {
             'Content-Type' : 'application/json',
             'Authorization' : `Bearer ${token}`
-        },
-        //do something here
+        }
     })
 }
 

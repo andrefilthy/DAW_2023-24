@@ -11,6 +11,7 @@ object PathTemplate {
     const val start = ""                //começar o jogo
     const val getGame = "/{gameID}"
     const val place = "/{gameID}/set"
+    const val giveUp = "/{gameID}/giveup"
 
     /** INDEX CONTROLLER /index **/
     const val deleteFromWaitingList = "removeFromLobby"

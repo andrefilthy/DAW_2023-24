@@ -59,6 +59,26 @@ class GameServices(
         return Either.Success(GameServicesResult.roundToServicesResult(EmptyRoundResult.WaitingForOtherPlayer) as GameServicesSuccess)
     }
 
+    fun giveUp(gameID : UUID, player : User) : GameServiceResult {
+        val game = transactionManager.run { it.gamesRepository.getById(gameID) }?:return gameNotFound()
+        val result = gameLogic.doGiveUp(game, player)
+        if(result is RoundResultWithGame){
+            transactionManager.run {
+                it.gamesRepository.update(result.game)
+            }
+            val winner = if(result.game.currentState == Game.State.PLAYER1_WON) result.game.player1
+            else result.game.player2
+            val loser = if(result.game.currentState == Game.State.PLAYER2_WON) result.game.player1
+            else result.game.player2
+            transactionManager.run {
+                it.userRepository.update(User(winner.username,winner.pwd, winner.numberOfGames+1, winner.numberOfWins+1))
+                it.userRepository.update(User(loser.username,loser.pwd, loser.numberOfGames+1, loser.numberOfWins))
+            }
+        return Either.Success(GameServicesResult.roundToServicesResult(result) as GameServicesSuccess)
+        }
+    return Either.Error(GameServicesResult.roundToServicesResult(result) as GameServicesError)
+    }
+
     fun playRound(gameID : UUID, player : User, plays : Play) : GameServiceResult {
         val game = transactionManager.run { it.gamesRepository.getById(gameID) }?:return gameNotFound()
         val result = gameLogic.doPlace(game, Round(player, plays))

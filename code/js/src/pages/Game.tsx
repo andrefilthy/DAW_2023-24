@@ -81,7 +81,6 @@ export function Game() : React.ReactElement {
                 setProps(sirenToProps(state));
                 return
             }
-            console.log(location)
             const fetchData = async () => {
                 ("fetch")
                 const res = await getGame(id, token);
@@ -98,6 +97,7 @@ export function Game() : React.ReactElement {
             {contents}
         </div>
     )
+    
 
     function renderGame() : React.ReactElement | null{
         const gamePhase = props?.properties.phase
@@ -122,20 +122,9 @@ export function Game() : React.ReactElement {
 
     function handleGoToMenu() {
         setPolling(false)
-        navigate('/');
+        navigate('/')
+        window.location.reload()
     }
-
-    async function giveUp(){
-        const res = await giveUpGame(token, id)
-        if(res.status == 200) {
-            alert("Você desistiu do jogo.")
-            return
-        } else {
-            alert("Ocorreu um erro ao desistir do jogo")
-            return
-        }
-    }
-
 
     function setupBoards(board : BoardType) : BoardProps {
         const gamePhase = props.properties.phase
@@ -157,6 +146,15 @@ export function Game() : React.ReactElement {
             console.log(body.error)
         }
         if(body.error == null) setProps(sirenToProps(body))
+    }
+
+    async function giveUp(){
+        const res = await giveUpGame(token, id)
+        const body = await res.json()
+        if(body.error != undefined) {
+            console.log(body.error)
+        }
+        if(body.error == null) setProps(sirenToProps(body))   
     }
 
     function gameInfo() : React.ReactElement{

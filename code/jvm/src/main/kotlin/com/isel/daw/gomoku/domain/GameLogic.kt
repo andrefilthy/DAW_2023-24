@@ -29,11 +29,41 @@ class GameLogic(
         return RoundResultWithGame.StartPlacingPhase(game)
     }
 
-/*
-    fun giveUp(game: Game, player: User) : RoundResult{
 
+    fun giveUp(game: Game, player : User, playerLogic: PlayerLogic) : RoundResult{
+        if (!playerLogic.isTurn(game, player)) {
+            return EmptyRoundResult.NotYourTurn
+        }
+        var board = game.board
+        var phase = game.currentPhase
+        var state = game.currentState
+
+        if(game.isPlayer1(player)){
+            state = Game.State.PLAYER2_WON
+            phase = Game.Phase.COMPLETED
+            return RoundResultWithGame.GameEnded(game.copy(board = board, currentState = state, currentPhase = phase, player1Logic = playerLogic))
+        }
+        if(game.isPlayer2(player)){
+            state = Game.State.PLAYER1_WON
+            phase = Game.Phase.COMPLETED
+            return RoundResultWithGame.GameEnded(game.copy(board = board, currentState = state, currentPhase = phase, player2Logic = playerLogic))
+        }
+        return RoundResultWithGame.StartPlacingPhase(game.copy(board = board, currentState = state, currentPhase = phase, player2Logic = playerLogic))
     }
- */
+
+    fun doGiveUp(game: Game, player : User) : RoundResult{
+        if(player.username != game.player1.username && player.username != game.player2.username){
+            return EmptyRoundResult.NotAPlayer
+        }
+        val now = clock.now()
+        return when (game.currentState){
+            Game.State.PLAYER1_WON -> EmptyRoundResult.GameAlreadyEnded
+            Game.State.PLAYER2_WON -> EmptyRoundResult.GameAlreadyEnded
+            Game.State.NEXT_PLAYER1 -> giveUp(game, player, game.player1Logic)
+            Game.State.NEXT_PLAYER2 -> giveUp(game, player, game.player2Logic)
+            else -> EmptyRoundResult.NotAllPlayersAreReady
+        }
+    }
 
 
     fun doPlace(game: Game, round : Round) : RoundResult{

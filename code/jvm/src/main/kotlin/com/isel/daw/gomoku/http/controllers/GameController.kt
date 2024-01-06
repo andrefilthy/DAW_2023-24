@@ -120,6 +120,35 @@ class GameController(private val gameServices : GameServices, private val userSe
         }
     }
 
+    @PostMapping(PathTemplate.giveUp)
+    fun giveUp(
+        user : User,
+        @PathVariable gameID : UUID
+    ) : ResponseEntity<*> {
+        val player = userServices.getByUsername(user.username)
+        val result = gameServices.giveUp(gameID, player)
+        when (result) {
+            is Either.Success -> {
+                val res = result.value as GameServicesSuccess.GameServicesSuccessWithGame
+                val game = res.game
+                var board = game.board
+
+                val output = GameOutputModel(
+                    gameID = game.gameID,
+                    resultInfo = res.resInfo,
+                    player1 = UserOutputModel(game.player1.username, game.player1.numberOfGames, game.player1.numberOfWins),
+                    player2 = UserOutputModel(game.player2.username, game.player2.numberOfGames, game.player2.numberOfWins),
+                    board = BoardOutputModel(board.toString().split("/")[0]),
+                    state = game.currentState,
+                    phase = game.currentPhase
+                )
+                return ResponseEntity.status(res.statusCode).body(output.toSiren())
+            }
+            is Either.Error -> return ResponseEntity.status(result.value.statusCode)
+                .body(ProblemOutputModel(result.value.error, result.value.message, null))
+        }
+    }
+
     @PostMapping(PathTemplate.place)
     fun playGame(
         user : User,
